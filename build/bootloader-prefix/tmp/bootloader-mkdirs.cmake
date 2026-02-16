@@ -10,18 +10,18 @@ if(NOT EXISTS "C:/esp/v5.5.2/esp-idf/components/bootloader/subproject")
   file(MAKE_DIRECTORY "C:/esp/v5.5.2/esp-idf/components/bootloader/subproject")
 endif()
 file(MAKE_DIRECTORY
-  "C:/Session4/Projet/Code/EspCar/S4_esp_controle2/Esp_car/build/bootloader"
-  "C:/Session4/Projet/Code/EspCar/S4_esp_controle2/Esp_car/build/bootloader-prefix"
-  "C:/Session4/Projet/Code/EspCar/S4_esp_controle2/Esp_car/build/bootloader-prefix/tmp"
-  "C:/Session4/Projet/Code/EspCar/S4_esp_controle2/Esp_car/build/bootloader-prefix/src/bootloader-stamp"
-  "C:/Session4/Projet/Code/EspCar/S4_esp_controle2/Esp_car/build/bootloader-prefix/src"
-  "C:/Session4/Projet/Code/EspCar/S4_esp_controle2/Esp_car/build/bootloader-prefix/src/bootloader-stamp"
+  "C:/Session4/Projet/Code/EspCar/S4_EspControle/build/bootloader"
+  "C:/Session4/Projet/Code/EspCar/S4_EspControle/build/bootloader-prefix"
+  "C:/Session4/Projet/Code/EspCar/S4_EspControle/build/bootloader-prefix/tmp"
+  "C:/Session4/Projet/Code/EspCar/S4_EspControle/build/bootloader-prefix/src/bootloader-stamp"
+  "C:/Session4/Projet/Code/EspCar/S4_EspControle/build/bootloader-prefix/src"
+  "C:/Session4/Projet/Code/EspCar/S4_EspControle/build/bootloader-prefix/src/bootloader-stamp"
 )
 
 set(configSubDirs )
 foreach(subDir IN LISTS configSubDirs)
-    file(MAKE_DIRECTORY "C:/Session4/Projet/Code/EspCar/S4_esp_controle2/Esp_car/build/bootloader-prefix/src/bootloader-stamp/${subDir}")
+    file(MAKE_DIRECTORY "C:/Session4/Projet/Code/EspCar/S4_EspControle/build/bootloader-prefix/src/bootloader-stamp/${subDir}")
 endforeach()
 if(cfgdir)
-  file(MAKE_DIRECTORY "C:/Session4/Projet/Code/EspCar/S4_esp_controle2/Esp_car/build/bootloader-prefix/src/bootloader-stamp${cfgdir}") # cfgdir has leading slash
+  file(MAKE_DIRECTORY "C:/Session4/Projet/Code/EspCar/S4_EspControle/build/bootloader-prefix/src/bootloader-stamp${cfgdir}") # cfgdir has leading slash
 endif()

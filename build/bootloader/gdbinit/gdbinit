@@ -1,2 +1,2 @@
-source C:/Session4/Projet/Code/EspCar/S4_esp_controle2/Esp_car/build/bootloader/gdbinit/symbols
-source C:/Session4/Projet/Code/EspCar/S4_esp_controle2/Esp_car/build/bootloader/gdbinit/connect
+source C:/Session4/Projet/Code/EspCar/S4_EspControle/build/bootloader/gdbinit/symbols
+source C:/Session4/Projet/Code/EspCar/S4_EspControle/build/bootloader/gdbinit/connect

@@ -1,4 +1,4 @@
-# Install script for directory: C:/Session4/Projet/Code/EspCar/S4_esp_controle2/Esp_car/components/init
+# Install script for directory: C:/Session4/Projet/Code/EspCar/S4_EspControle/components/init
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)

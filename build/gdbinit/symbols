@@ -13,8 +13,8 @@ end
 
 # Load bootloader symbols
 set confirm off
-    add-symbol-file C:/Session4/Projet/Code/EspCar/S4_esp_controle2/Esp_car/build/bootloader/bootloader.elf
+    add-symbol-file C:/Session4/Projet/Code/EspCar/S4_EspControle/build/bootloader/bootloader.elf
 set confirm on
 
 # Load application symbols
-file C:/Session4/Projet/Code/EspCar/S4_esp_controle2/Esp_car/build/Esp_car.elf
+file C:/Session4/Projet/Code/EspCar/S4_EspControle/build/Esp_car.elf

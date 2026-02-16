@@ -17,4 +17,4 @@ set confirm off
 set confirm on
 
 # Load application symbols
-file C:/Session4/Projet/Code/EspCar/S4_esp_controle2/Esp_car/build/bootloader/bootloader.elf
+file C:/Session4/Projet/Code/EspCar/S4_EspControle/build/bootloader/bootloader.elf
