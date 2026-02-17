@@ -583,6 +583,12 @@ C:/Session4/Projet/Code/EspCar/S4_EspControle/build/esp-idf/init/CMakeFiles/list
 C:/Session4/Projet/Code/EspCar/S4_EspControle/build/esp-idf/init/CMakeFiles/install.dir
 C:/Session4/Projet/Code/EspCar/S4_EspControle/build/esp-idf/init/CMakeFiles/install/local.dir
 C:/Session4/Projet/Code/EspCar/S4_EspControle/build/esp-idf/init/CMakeFiles/install/strip.dir
+C:/Session4/Projet/Code/EspCar/S4_EspControle/build/esp-idf/motor/CMakeFiles/edit_cache.dir
+C:/Session4/Projet/Code/EspCar/S4_EspControle/build/esp-idf/motor/CMakeFiles/rebuild_cache.dir
+C:/Session4/Projet/Code/EspCar/S4_EspControle/build/esp-idf/motor/CMakeFiles/list_install_components.dir
+C:/Session4/Projet/Code/EspCar/S4_EspControle/build/esp-idf/motor/CMakeFiles/install.dir
+C:/Session4/Projet/Code/EspCar/S4_EspControle/build/esp-idf/motor/CMakeFiles/install/local.dir
+C:/Session4/Projet/Code/EspCar/S4_EspControle/build/esp-idf/motor/CMakeFiles/install/strip.dir
 C:/Session4/Projet/Code/EspCar/S4_EspControle/build/esp-idf/main/CMakeFiles/__idf_main.dir
 C:/Session4/Projet/Code/EspCar/S4_EspControle/build/esp-idf/main/CMakeFiles/edit_cache.dir
 C:/Session4/Projet/Code/EspCar/S4_EspControle/build/esp-idf/main/CMakeFiles/rebuild_cache.dir
