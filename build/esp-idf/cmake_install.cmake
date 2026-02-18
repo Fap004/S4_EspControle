@@ -369,7 +369,37 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("C:/Session4/Projet/Code/EspCar/S4_EspControle/build/esp-idf/motor/cmake_install.cmake")
+  include("C:/Session4/Projet/Code/EspCar/S4_EspControle/build/esp-idf/PIDController/cmake_install.cmake")
+endif()
+
+if(NOT CMAKE_INSTALL_LOCAL_ONLY)
+  # Include the install script for the subdirectory.
+  include("C:/Session4/Projet/Code/EspCar/S4_EspControle/build/esp-idf/IMotorDriver/cmake_install.cmake")
+endif()
+
+if(NOT CMAKE_INSTALL_LOCAL_ONLY)
+  # Include the install script for the subdirectory.
+  include("C:/Session4/Projet/Code/EspCar/S4_EspControle/build/esp-idf/IEncoder/cmake_install.cmake")
+endif()
+
+if(NOT CMAKE_INSTALL_LOCAL_ONLY)
+  # Include the install script for the subdirectory.
+  include("C:/Session4/Projet/Code/EspCar/S4_EspControle/build/esp-idf/WheelController/cmake_install.cmake")
+endif()
+
+if(NOT CMAKE_INSTALL_LOCAL_ONLY)
+  # Include the install script for the subdirectory.
+  include("C:/Session4/Projet/Code/EspCar/S4_EspControle/build/esp-idf/IServo/cmake_install.cmake")
+endif()
+
+if(NOT CMAKE_INSTALL_LOCAL_ONLY)
+  # Include the install script for the subdirectory.
+  include("C:/Session4/Projet/Code/EspCar/S4_EspControle/build/esp-idf/SteeringController/cmake_install.cmake")
+endif()
+
+if(NOT CMAKE_INSTALL_LOCAL_ONLY)
+  # Include the install script for the subdirectory.
+  include("C:/Session4/Projet/Code/EspCar/S4_EspControle/build/esp-idf/DriveBase/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)

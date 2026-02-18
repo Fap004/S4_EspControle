@@ -1,9 +1,9 @@
 idf_component_register(
     SRCS
-        "com.cpp"
+    "Com.cpp"
 
     INCLUDE_DIRS
-        "."
+        "include"
 
     REQUIRES
         esp_wifi

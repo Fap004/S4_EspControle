@@ -1,0 +1,15 @@
+idf_component_register(
+    SRCS
+        "DriveBase.cpp"
+    INCLUDE_DIRS
+        "include"
+    REQUIRES
+        WheelController
+        SteeringController
+        PIDController
+        IMotorDriver
+        IEncoder
+        IServo
+        freertos
+        driver
+)

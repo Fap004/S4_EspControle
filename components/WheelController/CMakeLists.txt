@@ -1,0 +1,12 @@
+idf_component_register(
+    SRCS
+        "WheelController.cpp"
+    INCLUDE_DIRS
+        "include"
+    REQUIRES
+        PIDController
+        IMotorDriver
+        IEncoder
+        freertos
+        driver
+)

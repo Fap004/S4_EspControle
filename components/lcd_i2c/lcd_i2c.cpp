@@ -1,4 +1,4 @@
-#include "lcd_i2c.h"
+#include "Lcd_I2C.h"
 
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"

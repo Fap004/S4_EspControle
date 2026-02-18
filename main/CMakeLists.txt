@@ -4,8 +4,14 @@ idf_component_register(
     INCLUDE_DIRS 
         "."
     REQUIRES
-        com
-        lcd_i2c
-        init
-        motor
+        Com
+        Lcd_I2C
+        Init
+        DriveBase
+        IEncoder
+        IMotorDriver
+        IServo
+        PIDController
+        SteeringController
+        WheelController
 )
