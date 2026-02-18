@@ -1,5 +1,5 @@
 idf_component_register(
-                    SRCS "Lcd_I2C.cpp"        # ton fichier source C++
+                    SRCS "Lcd_I2C_tmp.cpp"        # ton fichier source C++
                     INCLUDE_DIRS "."          # dossier où se trouve lcd_i2c.h
                     REQUIRES driver freertos  # dépendances ESP-IDF utilisées
 )

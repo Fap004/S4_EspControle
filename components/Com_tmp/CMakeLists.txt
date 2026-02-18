@@ -1,6 +1,6 @@
 idf_component_register(
     SRCS
-    "Com.cpp"
+   
 
     INCLUDE_DIRS
         "include"
