@@ -1,7 +1,7 @@
 {
     "version":            "1.2",
     "project_name":       "Esp_car",
-    "project_version":    "eeb4a8b-dirty",
+    "project_version":    "23951bd-dirty",
     "project_path":       "C:/Session4/Projet/Code/EspCar/S4_EspControle",
     "idf_path":           "C:/esp/v5.5.2/esp-idf",
     "build_dir":          "C:/Session4/Projet/Code/EspCar/S4_EspControle/build",
@@ -116,7 +116,7 @@
             "managed_priv_reqs": [],
             "file": "C:/Session4/Projet/Code/EspCar/S4_EspControle/build/esp-idf/init/libInit.a",
             "sources": [ "C:/Session4/Projet/Code/EspCar/S4_EspControle/components/Init/Init.cpp" ],
-            "include_dirs": [ "." ]
+            "include_dirs": [ "include" ]
         },
         "Lcd_I2C": {
             "alias": "idf::Lcd_I2C",
@@ -131,7 +131,7 @@
             "managed_priv_reqs": [],
             "file": "C:/Session4/Projet/Code/EspCar/S4_EspControle/build/esp-idf/lcd_i2c/libLcd_I2C.a",
             "sources": [ "C:/Session4/Projet/Code/EspCar/S4_EspControle/components/Lcd_I2C/Lcd_I2C.cpp" ],
-            "include_dirs": [ "." ]
+            "include_dirs": [ "include" ]
         },
         "PIDController": {
             "alias": "idf::PIDController",
@@ -2518,7 +2518,7 @@
             "priv_reqs": [],
             "managed_reqs": [],
             "managed_priv_reqs": [],
-            "include_dirs": [ "." ]
+            "include_dirs": [ "include" ]
         },
         "Lcd_I2C": {
             "alias": "idf::Lcd_I2C",
@@ -2530,7 +2530,7 @@
             "priv_reqs": [],
             "managed_reqs": [],
             "managed_priv_reqs": [],
-            "include_dirs": [ "." ]
+            "include_dirs": [ "include" ]
         },
         "PIDController": {
             "alias": "idf::PIDController",
