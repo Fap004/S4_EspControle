@@ -1,7 +1,7 @@
 {
     "version":            "1.2",
     "project_name":       "Esp_car",
-    "project_version":    "5e728a3-dirty",
+    "project_version":    "f122b18-dirty",
     "project_path":       "C:/Session4/Projet/Code/EspCar/S4_EspControle",
     "idf_path":           "C:/esp/v5.5.2/esp-idf",
     "build_dir":          "C:/Session4/Projet/Code/EspCar/S4_EspControle/build",
@@ -25,8 +25,8 @@
         "COMPONENT_KCONFIGS_PROJBUILD" : "C:/esp/v5.5.2/esp-idf/components/bootloader/Kconfig.projbuild;C:/esp/v5.5.2/esp-idf/components/esp_app_format/Kconfig.projbuild;C:/esp/v5.5.2/esp-idf/components/esp_rom/Kconfig.projbuild;C:/esp/v5.5.2/esp-idf/components/esptool_py/Kconfig.projbuild;C:/esp/v5.5.2/esp-idf/components/partition_table/Kconfig.projbuild"
     },
     "common_component_reqs": [ "cxx", "newlib", "freertos", "esp_hw_support", "heap", "log", "soc", "hal", "esp_rom", "esp_common", "esp_system", "riscv" ],
-    "build_components" : [ "Com", "DriveBase", "IEncoder", "IMotorDriver", "IServo", "Init", "Lcd_I2C", "PIDController", "Protocol", "SteeringController", "WheelController", "app_update", "bootloader", "bootloader_support", "cxx", "driver", "efuse", "esp_app_format", "esp_bootloader_format", "esp_coex", "esp_common", "esp_driver_ana_cmpr", "esp_driver_bitscrambler", "esp_driver_dac", "esp_driver_gpio", "esp_driver_gptimer", "esp_driver_i2c", "esp_driver_i2s", "esp_driver_ledc", "esp_driver_mcpwm", "esp_driver_parlio", "esp_driver_pcnt", "esp_driver_rmt", "esp_driver_sdio", "esp_driver_sdm", "esp_driver_sdmmc", "esp_driver_sdspi", "esp_driver_spi", "esp_driver_tsens", "esp_driver_twai", "esp_driver_uart", "esp_driver_usb_serial_jtag", "esp_event", "esp_hw_support", "esp_mm", "esp_netif", "esp_netif_stack", "esp_partition", "esp_phy", "esp_pm", "esp_ringbuf", "esp_rom", "esp_security", "esp_system", "esp_timer", "esp_vfs_console", "esp_wifi", "esptool_py", "freertos", "hal", "heap", "log", "lwip", "main", "mbedtls", "newlib", "nvs_flash", "partition_table", "pthread", "riscv", "sdmmc", "soc", "spi_flash", "vfs", "wpa_supplicant", "" ],
-    "build_component_paths" : [ "C:/Session4/Projet/Code/EspCar/S4_EspControle/components/Com", "C:/Session4/Projet/Code/EspCar/S4_EspControle/components/DriveBase", "C:/Session4/Projet/Code/EspCar/S4_EspControle/components/IEncoder", "C:/Session4/Projet/Code/EspCar/S4_EspControle/components/IMotorDriver", "C:/Session4/Projet/Code/EspCar/S4_EspControle/components/IServo", "C:/Session4/Projet/Code/EspCar/S4_EspControle/components/Init", "C:/Session4/Projet/Code/EspCar/S4_EspControle/components/Lcd_I2C", "C:/Session4/Projet/Code/EspCar/S4_EspControle/components/PIDController", "C:/Session4/Projet/Code/EspCar/S4_EspControle/components/Protocol", "C:/Session4/Projet/Code/EspCar/S4_EspControle/components/SteeringController", "C:/Session4/Projet/Code/EspCar/S4_EspControle/components/WheelController", "C:/esp/v5.5.2/esp-idf/components/app_update", "C:/esp/v5.5.2/esp-idf/components/bootloader", "C:/esp/v5.5.2/esp-idf/components/bootloader_support", "C:/esp/v5.5.2/esp-idf/components/cxx", "C:/esp/v5.5.2/esp-idf/components/driver", "C:/esp/v5.5.2/esp-idf/components/efuse", "C:/esp/v5.5.2/esp-idf/components/esp_app_format", "C:/esp/v5.5.2/esp-idf/components/esp_bootloader_format", "C:/esp/v5.5.2/esp-idf/components/esp_coex", "C:/esp/v5.5.2/esp-idf/components/esp_common", "C:/esp/v5.5.2/esp-idf/components/esp_driver_ana_cmpr", "C:/esp/v5.5.2/esp-idf/components/esp_driver_bitscrambler", "C:/esp/v5.5.2/esp-idf/components/esp_driver_dac", "C:/esp/v5.5.2/esp-idf/components/esp_driver_gpio", "C:/esp/v5.5.2/esp-idf/components/esp_driver_gptimer", "C:/esp/v5.5.2/esp-idf/components/esp_driver_i2c", "C:/esp/v5.5.2/esp-idf/components/esp_driver_i2s", "C:/esp/v5.5.2/esp-idf/components/esp_driver_ledc", "C:/esp/v5.5.2/esp-idf/components/esp_driver_mcpwm", "C:/esp/v5.5.2/esp-idf/components/esp_driver_parlio", "C:/esp/v5.5.2/esp-idf/components/esp_driver_pcnt", "C:/esp/v5.5.2/esp-idf/components/esp_driver_rmt", "C:/esp/v5.5.2/esp-idf/components/esp_driver_sdio", "C:/esp/v5.5.2/esp-idf/components/esp_driver_sdm", "C:/esp/v5.5.2/esp-idf/components/esp_driver_sdmmc", "C:/esp/v5.5.2/esp-idf/components/esp_driver_sdspi", "C:/esp/v5.5.2/esp-idf/components/esp_driver_spi", "C:/esp/v5.5.2/esp-idf/components/esp_driver_tsens", "C:/esp/v5.5.2/esp-idf/components/esp_driver_twai", "C:/esp/v5.5.2/esp-idf/components/esp_driver_uart", "C:/esp/v5.5.2/esp-idf/components/esp_driver_usb_serial_jtag", "C:/esp/v5.5.2/esp-idf/components/esp_event", "C:/esp/v5.5.2/esp-idf/components/esp_hw_support", "C:/esp/v5.5.2/esp-idf/components/esp_mm", "C:/esp/v5.5.2/esp-idf/components/esp_netif", "C:/esp/v5.5.2/esp-idf/components/esp_netif_stack", "C:/esp/v5.5.2/esp-idf/components/esp_partition", "C:/esp/v5.5.2/esp-idf/components/esp_phy", "C:/esp/v5.5.2/esp-idf/components/esp_pm", "C:/esp/v5.5.2/esp-idf/components/esp_ringbuf", "C:/esp/v5.5.2/esp-idf/components/esp_rom", "C:/esp/v5.5.2/esp-idf/components/esp_security", "C:/esp/v5.5.2/esp-idf/components/esp_system", "C:/esp/v5.5.2/esp-idf/components/esp_timer", "C:/esp/v5.5.2/esp-idf/components/esp_vfs_console", "C:/esp/v5.5.2/esp-idf/components/esp_wifi", "C:/esp/v5.5.2/esp-idf/components/esptool_py", "C:/esp/v5.5.2/esp-idf/components/freertos", "C:/esp/v5.5.2/esp-idf/components/hal", "C:/esp/v5.5.2/esp-idf/components/heap", "C:/esp/v5.5.2/esp-idf/components/log", "C:/esp/v5.5.2/esp-idf/components/lwip", "C:/Session4/Projet/Code/EspCar/S4_EspControle/main", "C:/esp/v5.5.2/esp-idf/components/mbedtls", "C:/esp/v5.5.2/esp-idf/components/newlib", "C:/esp/v5.5.2/esp-idf/components/nvs_flash", "C:/esp/v5.5.2/esp-idf/components/partition_table", "C:/esp/v5.5.2/esp-idf/components/pthread", "C:/esp/v5.5.2/esp-idf/components/riscv", "C:/esp/v5.5.2/esp-idf/components/sdmmc", "C:/esp/v5.5.2/esp-idf/components/soc", "C:/esp/v5.5.2/esp-idf/components/spi_flash", "C:/esp/v5.5.2/esp-idf/components/vfs", "C:/esp/v5.5.2/esp-idf/components/wpa_supplicant", "" ],
+    "build_components" : [ "Com", "DriveBase", "IEncoder", "IMotorDriver", "IServo", "Init", "Lcd_I2C", "PIDController", "PcntEncoder", "Protocol", "SteeringController", "WheelController", "app_update", "bootloader", "bootloader_support", "cxx", "driver", "efuse", "esp_app_format", "esp_bootloader_format", "esp_coex", "esp_common", "esp_driver_ana_cmpr", "esp_driver_bitscrambler", "esp_driver_dac", "esp_driver_gpio", "esp_driver_gptimer", "esp_driver_i2c", "esp_driver_i2s", "esp_driver_ledc", "esp_driver_mcpwm", "esp_driver_parlio", "esp_driver_pcnt", "esp_driver_rmt", "esp_driver_sdio", "esp_driver_sdm", "esp_driver_sdmmc", "esp_driver_sdspi", "esp_driver_spi", "esp_driver_tsens", "esp_driver_twai", "esp_driver_uart", "esp_driver_usb_serial_jtag", "esp_event", "esp_hw_support", "esp_mm", "esp_netif", "esp_netif_stack", "esp_partition", "esp_phy", "esp_pm", "esp_ringbuf", "esp_rom", "esp_security", "esp_system", "esp_timer", "esp_vfs_console", "esp_wifi", "esptool_py", "freertos", "hal", "heap", "log", "lwip", "main", "mbedtls", "newlib", "nvs_flash", "partition_table", "pthread", "riscv", "sdmmc", "soc", "spi_flash", "vfs", "wpa_supplicant", "" ],
+    "build_component_paths" : [ "C:/Session4/Projet/Code/EspCar/S4_EspControle/components/Com", "C:/Session4/Projet/Code/EspCar/S4_EspControle/components/DriveBase", "C:/Session4/Projet/Code/EspCar/S4_EspControle/components/IEncoder", "C:/Session4/Projet/Code/EspCar/S4_EspControle/components/IMotorDriver", "C:/Session4/Projet/Code/EspCar/S4_EspControle/components/IServo", "C:/Session4/Projet/Code/EspCar/S4_EspControle/components/Init", "C:/Session4/Projet/Code/EspCar/S4_EspControle/components/Lcd_I2C", "C:/Session4/Projet/Code/EspCar/S4_EspControle/components/PIDController", "C:/Session4/Projet/Code/EspCar/S4_EspControle/components/PcntEncoder", "C:/Session4/Projet/Code/EspCar/S4_EspControle/components/Protocol", "C:/Session4/Projet/Code/EspCar/S4_EspControle/components/SteeringController", "C:/Session4/Projet/Code/EspCar/S4_EspControle/components/WheelController", "C:/esp/v5.5.2/esp-idf/components/app_update", "C:/esp/v5.5.2/esp-idf/components/bootloader", "C:/esp/v5.5.2/esp-idf/components/bootloader_support", "C:/esp/v5.5.2/esp-idf/components/cxx", "C:/esp/v5.5.2/esp-idf/components/driver", "C:/esp/v5.5.2/esp-idf/components/efuse", "C:/esp/v5.5.2/esp-idf/components/esp_app_format", "C:/esp/v5.5.2/esp-idf/components/esp_bootloader_format", "C:/esp/v5.5.2/esp-idf/components/esp_coex", "C:/esp/v5.5.2/esp-idf/components/esp_common", "C:/esp/v5.5.2/esp-idf/components/esp_driver_ana_cmpr", "C:/esp/v5.5.2/esp-idf/components/esp_driver_bitscrambler", "C:/esp/v5.5.2/esp-idf/components/esp_driver_dac", "C:/esp/v5.5.2/esp-idf/components/esp_driver_gpio", "C:/esp/v5.5.2/esp-idf/components/esp_driver_gptimer", "C:/esp/v5.5.2/esp-idf/components/esp_driver_i2c", "C:/esp/v5.5.2/esp-idf/components/esp_driver_i2s", "C:/esp/v5.5.2/esp-idf/components/esp_driver_ledc", "C:/esp/v5.5.2/esp-idf/components/esp_driver_mcpwm", "C:/esp/v5.5.2/esp-idf/components/esp_driver_parlio", "C:/esp/v5.5.2/esp-idf/components/esp_driver_pcnt", "C:/esp/v5.5.2/esp-idf/components/esp_driver_rmt", "C:/esp/v5.5.2/esp-idf/components/esp_driver_sdio", "C:/esp/v5.5.2/esp-idf/components/esp_driver_sdm", "C:/esp/v5.5.2/esp-idf/components/esp_driver_sdmmc", "C:/esp/v5.5.2/esp-idf/components/esp_driver_sdspi", "C:/esp/v5.5.2/esp-idf/components/esp_driver_spi", "C:/esp/v5.5.2/esp-idf/components/esp_driver_tsens", "C:/esp/v5.5.2/esp-idf/components/esp_driver_twai", "C:/esp/v5.5.2/esp-idf/components/esp_driver_uart", "C:/esp/v5.5.2/esp-idf/components/esp_driver_usb_serial_jtag", "C:/esp/v5.5.2/esp-idf/components/esp_event", "C:/esp/v5.5.2/esp-idf/components/esp_hw_support", "C:/esp/v5.5.2/esp-idf/components/esp_mm", "C:/esp/v5.5.2/esp-idf/components/esp_netif", "C:/esp/v5.5.2/esp-idf/components/esp_netif_stack", "C:/esp/v5.5.2/esp-idf/components/esp_partition", "C:/esp/v5.5.2/esp-idf/components/esp_phy", "C:/esp/v5.5.2/esp-idf/components/esp_pm", "C:/esp/v5.5.2/esp-idf/components/esp_ringbuf", "C:/esp/v5.5.2/esp-idf/components/esp_rom", "C:/esp/v5.5.2/esp-idf/components/esp_security", "C:/esp/v5.5.2/esp-idf/components/esp_system", "C:/esp/v5.5.2/esp-idf/components/esp_timer", "C:/esp/v5.5.2/esp-idf/components/esp_vfs_console", "C:/esp/v5.5.2/esp-idf/components/esp_wifi", "C:/esp/v5.5.2/esp-idf/components/esptool_py", "C:/esp/v5.5.2/esp-idf/components/freertos", "C:/esp/v5.5.2/esp-idf/components/hal", "C:/esp/v5.5.2/esp-idf/components/heap", "C:/esp/v5.5.2/esp-idf/components/log", "C:/esp/v5.5.2/esp-idf/components/lwip", "C:/Session4/Projet/Code/EspCar/S4_EspControle/main", "C:/esp/v5.5.2/esp-idf/components/mbedtls", "C:/esp/v5.5.2/esp-idf/components/newlib", "C:/esp/v5.5.2/esp-idf/components/nvs_flash", "C:/esp/v5.5.2/esp-idf/components/partition_table", "C:/esp/v5.5.2/esp-idf/components/pthread", "C:/esp/v5.5.2/esp-idf/components/riscv", "C:/esp/v5.5.2/esp-idf/components/sdmmc", "C:/esp/v5.5.2/esp-idf/components/soc", "C:/esp/v5.5.2/esp-idf/components/spi_flash", "C:/esp/v5.5.2/esp-idf/components/vfs", "C:/esp/v5.5.2/esp-idf/components/wpa_supplicant", "" ],
     "build_component_info" : {
         "Com": {
             "alias": "idf::Com",
@@ -146,6 +146,21 @@
             "managed_priv_reqs": [],
             "file": "C:/Session4/Projet/Code/EspCar/S4_EspControle/build/esp-idf/PIDController/libPIDController.a",
             "sources": [ "C:/Session4/Projet/Code/EspCar/S4_EspControle/components/PIDController/PIDController.cpp" ],
+            "include_dirs": [ "include" ]
+        },
+        "PcntEncoder": {
+            "alias": "idf::PcntEncoder",
+            "target": "___idf_PcntEncoder",
+            "prefix": "idf",
+            "dir": "C:/Session4/Projet/Code/EspCar/S4_EspControle/components/PcntEncoder",
+            "type": "LIBRARY",
+            "lib": "__idf_PcntEncoder",
+            "reqs": [ "driver", "IEncoder" ],
+            "priv_reqs": [],
+            "managed_reqs": [],
+            "managed_priv_reqs": [],
+            "file": "C:/Session4/Projet/Code/EspCar/S4_EspControle/build/esp-idf/PcntEncoder/libPcntEncoder.a",
+            "sources": [ "C:/Session4/Projet/Code/EspCar/S4_EspControle/components/PcntEncoder/PcntEncoder.cpp" ],
             "include_dirs": [ "include" ]
         },
         "Protocol": {
@@ -980,7 +995,7 @@
             "dir": "C:/Session4/Projet/Code/EspCar/S4_EspControle/main",
             "type": "LIBRARY",
             "lib": "__idf_main",
-            "reqs": [ "Com", "Lcd_I2C", "Init", "DriveBase", "IEncoder", "IMotorDriver", "IServo", "PIDController", "SteeringController", "WheelController", "Protocol" ],
+            "reqs": [ "Com", "Lcd_I2C", "Init", "DriveBase", "IEncoder", "IMotorDriver", "IServo", "PIDController", "SteeringController", "WheelController", "Protocol", "PcntEncoder" ],
             "priv_reqs": [],
             "managed_reqs": [],
             "managed_priv_reqs": [],
@@ -2457,7 +2472,7 @@
             "prefix": "idf",
             "dir": "C:/Session4/Projet/Code/EspCar/S4_EspControle/main",
             "lib": "__idf_main",
-            "reqs": [ "Com", "Lcd_I2C", "Init", "DriveBase", "IEncoder", "IMotorDriver", "IServo", "PIDController", "SteeringController", "WheelController", "Protocol" ],
+            "reqs": [ "Com", "Lcd_I2C", "Init", "DriveBase", "IEncoder", "IMotorDriver", "IServo", "PIDController", "SteeringController", "WheelController", "Protocol", "PcntEncoder" ],
             "priv_reqs": [],
             "managed_reqs": [],
             "managed_priv_reqs": [],
@@ -2554,6 +2569,18 @@
             "dir": "C:/Session4/Projet/Code/EspCar/S4_EspControle/components/PIDController",
             "lib": "__idf_PIDController",
             "reqs": [],
+            "priv_reqs": [],
+            "managed_reqs": [],
+            "managed_priv_reqs": [],
+            "include_dirs": [ "include" ]
+        },
+        "PcntEncoder": {
+            "alias": "idf::PcntEncoder",
+            "target": "___idf_PcntEncoder",
+            "prefix": "idf",
+            "dir": "C:/Session4/Projet/Code/EspCar/S4_EspControle/components/PcntEncoder",
+            "lib": "__idf_PcntEncoder",
+            "reqs": [ "driver", "IEncoder" ],
             "priv_reqs": [],
             "managed_reqs": [],
             "managed_priv_reqs": [],

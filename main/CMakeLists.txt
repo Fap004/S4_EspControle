@@ -15,4 +15,5 @@ idf_component_register(
         SteeringController
         WheelController
         Protocol
+        PcntEncoder
 )

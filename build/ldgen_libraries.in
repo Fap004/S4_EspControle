@@ -130,9 +130,11 @@ $<TARGET_FILE:idf::DriveBase>
 $<TARGET_FILE:__idf_WheelController>
 $<TARGET_FILE:__idf_SteeringController>
 $<TARGET_FILE:idf::Protocol>
+$<TARGET_FILE:idf::PcntEncoder>
 $<TARGET_FILE:idf::main>
 $<TARGET_FILE:__idf_Com>
 $<TARGET_FILE:__idf_Lcd_I2C>
 $<TARGET_FILE:__idf_Init>
 $<TARGET_FILE:__idf_DriveBase>
 $<TARGET_FILE:__idf_Protocol>
+$<TARGET_FILE:__idf_PcntEncoder>
