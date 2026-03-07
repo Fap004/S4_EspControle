@@ -3,7 +3,6 @@ idf_component_register(
         "Com.cpp"
     INCLUDE_DIRS
         "include"
-
     REQUIRES
         esp_wifi
         esp_netif
