@@ -1,0 +1,16 @@
+idf_component_register(
+    SRCS
+        "AppContext.cpp"
+    INCLUDE_DIRS
+        "include"
+    REQUIRES
+        PIDController
+        IMotorDriver
+        IEncoder
+        PcntEncoder
+        WheelController
+        DriveBase
+        LedcHBridgeDriver
+        freertos
+        driver
+)

@@ -1,0 +1,11 @@
+idf_component_register(
+    SRCS
+        "ComTasks.cpp"
+    INCLUDE_DIRS
+        "include"
+    REQUIRES
+        AppContext
+        Protocol
+        Com
+        freertos
+)

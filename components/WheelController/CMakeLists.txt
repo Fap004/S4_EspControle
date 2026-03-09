@@ -7,6 +7,7 @@ idf_component_register(
         PIDController
         IMotorDriver
         IEncoder
+        PcntEncoder
         freertos
         driver
 )

@@ -1,0 +1,9 @@
+idf_component_register(
+    SRCS            
+        "LedcHBridgeDriver.cpp"    
+    INCLUDE_DIRS 
+        "include"
+    REQUIRES        
+        driver
+        IMotorDriver
+)

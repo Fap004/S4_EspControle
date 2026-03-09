@@ -5,11 +5,4 @@ idf_component_register(
         "include"
     REQUIRES
         WheelController
-        SteeringController
-        PIDController
-        IMotorDriver
-        IEncoder
-        IServo
-        freertos
-        driver
 )

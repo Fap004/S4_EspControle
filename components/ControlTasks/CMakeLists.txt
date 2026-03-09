@@ -1,0 +1,9 @@
+idf_component_register(
+    SRCS
+        "ControlTasks.cpp"
+    INCLUDE_DIRS
+        "include"
+    REQUIRES
+        AppContext
+        freertos
+)
