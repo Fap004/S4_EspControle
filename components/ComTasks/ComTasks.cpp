@@ -58,7 +58,7 @@ static void vTaskRx(void* arg)
 
                 AppContext::CmdVW cmd { .v_mps = v, .omega = 0.0f };
 
-                // ⚠️ Si ta queue a une longueur > 1, préfère xQueueSend(..., 0).
+                // Si ta queue a une longueur > 1, préfère xQueueSend(..., 0).
                 // xQueueOverwrite est prévu pour des queues de longueur 1.
                 (void)xQueueOverwrite(ctx->q_cmd_vw, &cmd);
             }
@@ -81,7 +81,8 @@ static void vTaskTx(void* arg)
     for (;;)
     {
         AppContext::Telemetry tlm;
-        if (xQueueReceive(ctx->q_tlm, &tlm, 0) != pdTRUE) {
+        if (xQueueReceive(ctx->q_tlm, &tlm, 0) != pdTRUE) 
+        {
             // Fallback si rien dans la queue
             tlm.rpmL = ctx->wheel_left.measuredRpm();
             tlm.rpmR = ctx->wheel_right.measuredRpm();
@@ -94,7 +95,8 @@ static void vTaskTx(void* arg)
         uint8_t data[MSG_DATA_LEN] = { (uint8_t)(w >> 8), (uint8_t)(w & 0xFF) };
 
         const esp_err_t err = com_send(peer_mac, data, sizeof(data));
-        if (err != ESP_OK) {
+        if (err != ESP_OK) 
+        {
             printf("[TX] com_send err=%d\n", (int)err);
         }
 

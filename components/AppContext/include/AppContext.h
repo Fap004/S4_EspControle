@@ -19,15 +19,15 @@ struct AppContext
     gpio_num_t L_PWM  = GPIO_NUM_13;
 
     // Moteur droit
-    gpio_num_t R_INA  = GPIO_NUM_2;
-    gpio_num_t R_INB  = GPIO_NUM_3;
-    gpio_num_t R_SEL0 = GPIO_NUM_NC;
-    gpio_num_t R_PWM  = GPIO_NUM_4;
+    gpio_num_t R_INA  = GPIO_NUM_5;
+    gpio_num_t R_INB  = GPIO_NUM_4;
+    gpio_num_t R_SEL0 = GPIO_NUM_6;
+    gpio_num_t R_PWM  = GPIO_NUM_0;
 
     // Encodeurs
     gpio_num_t L_ENC_A = GPIO_NUM_22;
-    gpio_num_t L_ENC_B = GPIO_NUM_20;
-    gpio_num_t R_ENC_A = GPIO_NUM_21;
+    gpio_num_t L_ENC_B = GPIO_NUM_21;
+    gpio_num_t R_ENC_A = GPIO_NUM_20;
     gpio_num_t R_ENC_B = GPIO_NUM_19;
 
     // === Instances bas niveau ===
@@ -40,10 +40,23 @@ struct AppContext
     LedcHBridgeDriver motor_left  { L_pins, L_cfg };
     LedcHBridgeDriver motor_right { R_pins, R_cfg };
 
-    // Encodeurs
-    float TPR = 2048.0f;
-    PcntEncoder enc_left  { L_ENC_A, L_ENC_B, TPR };
-    PcntEncoder enc_right { R_ENC_A, R_ENC_B, TPR };
+    // Encodeurs — TPR roue (A-DAPTER)
+    static constexpr float TPR_LEFT  = 2000.0f;   // ← METS TA VALEUR MESURÉE, 17PPR ENCODER
+    static constexpr float TPR_RIGHT = 2000.0f;   // ← METS TA VALEUR MESURÉE
+
+    PcntEncoder enc_left  { L_ENC_A, L_ENC_B, TPR_LEFT  };
+    PcntEncoder enc_right { R_ENC_A, R_ENC_B, TPR_RIGHT };
+
+    // WheelControllers (utilisent TPR de l’encodeur)
+    WheelController::Config wc_cfg {
+        .rpm_max         = 7000.0f,
+        .lp_alpha        = 0.7f,      // lissage
+        .ticks_per_rev   = 0.0f,      // ignoré
+        .use_encoder_tpr = true       // ← important !
+    };
+
+    WheelController wheel_left  { motor_left,  enc_left,  pid_left,  wc_cfg };
+    WheelController wheel_right { motor_right, enc_right, pid_right, wc_cfg };
 
     // PID
     PIDController::Gains  gains { .Kp = 0.0035f, .Ki = 0.5f, .Kd = 0.0005f };
@@ -51,19 +64,9 @@ struct AppContext
     PIDController pid_left  { gains, lims };
     PIDController pid_right { gains, lims };
 
-    // WheelControllers
-    WheelController::Config wc_cfg {
-        .rpm_max         = 3000.0f,
-        .lp_alpha        = 0.3f,
-        .ticks_per_rev   = TPR,
-        .use_encoder_tpr = true
-    };
-    WheelController wheel_left  { motor_left,  enc_left,  pid_left,  wc_cfg };
-    WheelController wheel_right { motor_right, enc_right, pid_right, wc_cfg };
-
     // DriveBase
     DriveBase::Geometry geom { .wheel_radius_m = 0.035f, .track_width_m = 0.180f };
-    DriveBase drive { wheel_left, wheel_right, geom, /*rpm_max=*/3000.0f };
+    DriveBase drive { wheel_left, wheel_right, geom, /*rpm_max=*/7000.0f };
 
     // === Communication (queues/structs) ===
     // Une file de commande "haute-niveau" (v,ω) ou (rpmL,rpmR)

@@ -7,4 +7,5 @@ idf_component_register(
         AppContext
         ComTasks
         ControlTasks
+        PcntEncoder
 )

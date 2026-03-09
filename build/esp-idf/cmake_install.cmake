@@ -199,12 +199,17 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("C:/Session4/Projet/Code/EspCar/S4_EspControle/build/esp-idf/esp_ringbuf/cmake_install.cmake")
+  include("C:/Session4/Projet/Code/EspCar/S4_EspControle/build/esp-idf/esp_driver_pcnt/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("C:/Session4/Projet/Code/EspCar/S4_EspControle/build/esp-idf/esp_driver_pcnt/cmake_install.cmake")
+  include("C:/Session4/Projet/Code/EspCar/S4_EspControle/build/esp-idf/PcntEncoder/cmake_install.cmake")
+endif()
+
+if(NOT CMAKE_INSTALL_LOCAL_ONLY)
+  # Include the install script for the subdirectory.
+  include("C:/Session4/Projet/Code/EspCar/S4_EspControle/build/esp-idf/esp_ringbuf/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
@@ -310,11 +315,6 @@ endif()
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
   include("C:/Session4/Projet/Code/EspCar/S4_EspControle/build/esp-idf/driver/cmake_install.cmake")
-endif()
-
-if(NOT CMAKE_INSTALL_LOCAL_ONLY)
-  # Include the install script for the subdirectory.
-  include("C:/Session4/Projet/Code/EspCar/S4_EspControle/build/esp-idf/PcntEncoder/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)

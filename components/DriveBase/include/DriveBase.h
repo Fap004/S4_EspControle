@@ -68,7 +68,7 @@ public:
 
     inline void setRpmMax(float rpm_max) { rpm_max_ = std::fabs(rpm_max); }
     inline void setGeometry(const Geometry& g) { geom_ = g; }
-    inline float   rpmMax()    const { return rpm_max_; }
+    inline float rpmMax() const { return rpm_max_; }
     inline Geometry geometry() const { return geom_; }
 
 private:
