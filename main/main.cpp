@@ -1,24 +1,57 @@
 #include "AppContext.h"
 #include "ControlTasks.h"
 #include "ComTasks.h"
+#include "esp_log.h"
+#include "freertos/FreeRTOS.h"
+#include "freertos/task.h"
+
+static const char* TAG = "MAIN";
+
+// --- Petite tâche utilitaire pour logger l'encodeur gauche à 50 Hz ---
+static void vTaskEncDebug(void* arg)
+{
+    AppContext* ctx = static_cast<AppContext*>(arg);
+    const TickType_t period = pdMS_TO_TICKS(20); // 50 Hz
+
+    TickType_t last = xTaskGetTickCount();
+    for (;;)
+    {
+        TickType_t now = xTaskGetTickCount();
+        const float dt = (now - last) * (1.0f / configTICK_RATE_HZ);
+        last = now;
+
+        // Lecture delta + RPM filtrée
+        const int32_t d  = ctx->enc_left.getDelta();
+        const float   rpm = ctx->enc_left.rpm(dt, /*lpf=*/true);
+
+        ESP_LOGI("ENC-L", "d=%ld rpm=%.2f", (long)d, rpm);
+
+        vTaskDelayUntil(&last, period);
+    }
+}
 
 extern "C" void app_main(void)
 {
-    static AppContext ctx;          // durée de vie globale
+    static AppContext ctx;  // durée de vie globale (statique)
 
-    // Init des drivers/encodeurs/queues
+    // 1) Init des drivers/encodeurs/queues
     ESP_ERROR_CHECK(appctx_init(ctx));
 
-    // MAC du peer (ADAPTER)
-    const uint8_t peer_mac[6] = { 0x20, 0x6E, 0xF1, 0x09, 0xB3, 0xA0 };//{ 0x20, 0x6E, 0xF1, 0x0D, 0x4D, 0xB8 }
-    const uint8_t wifi_channel = 1;
+    // 2) (Option) Démarrer les tâches COM (ESPNOW)
+    // Remets ta MAC “peer” si tu l’utilises
+    // const uint8_t peer_mac[6]   = { 0x20, 0x6E, 0xF1, 0x09, 0xB3, 0xA0 };
+    // const uint8_t wifi_channel  = 1;
+    // start_rx_task(&ctx, 6, peer_mac, wifi_channel);
+    // start_tx_task(&ctx, 5, peer_mac);
 
-    // Démarrer les tâches
-    start_control_task(&ctx, 7);    // 100 Hz
-    start_rx_task(&ctx, 6, peer_mac, wifi_channel);
-    start_tx_task(&ctx, 5, peer_mac);
+    // 3) Démarrer la tâche de contrôle (100 Hz)
+    start_control_task(&ctx, /*prio=*/7);
 
-    // (Option) Tâche servo à démarrer ici plus tard (start_servo_task(&ctx, prio...))
+    // 4) (Option) petite tâche de debug encodeur (50 Hz)
+    xTaskCreate(vTaskEncDebug, "enc_dbg", 3072, &ctx, /*prio=*/4, nullptr);
+
+    ESP_LOGI(TAG, "app_main: init OK, tasks started");
+    // app_main() retourne, FreeRTOS prend la main.
 }
 /*
 #include <stdio.h>

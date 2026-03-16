@@ -31,8 +31,8 @@ struct AppContext
     gpio_num_t R_PWM  = GPIO_NUM_13;
 
     // Encodeurs
-    gpio_num_t L_ENC_A = GPIO_NUM_22;
-    gpio_num_t L_ENC_B = GPIO_NUM_21;
+    gpio_num_t L_ENC_A = GPIO_NUM_21;//inverser test
+    gpio_num_t L_ENC_B = GPIO_NUM_22;//inverser test
     gpio_num_t R_ENC_A = GPIO_NUM_20;
     gpio_num_t R_ENC_B = GPIO_NUM_19;
 
@@ -54,8 +54,9 @@ struct AppContext
     PcntEncoder enc_right { R_ENC_A, R_ENC_B, TPR_RIGHT };
 
     // === PID & WheelControllers ===
-    PIDController::Gains  gains { .Kp = 0.0035f, .Ki = 0.0f, .Kd = 0.0f };
+    PIDController::Gains  gains { .Kp = 0.05f, .Ki = 0.0000f, .Kd = 0.0f };
     PIDController::Limits lims  { .u_min = -1.0f, .u_max = +1.0f, .i_min = -0.5f, .i_max = +0.5f };
+
     PIDController pid_left  { gains, lims };
     PIDController pid_right { gains, lims };
 

@@ -38,7 +38,7 @@ public:
     void update(float dt)
     {
         // 1) Mesure delta ticks sur dt
-        const int32_t d = enc_.getAndClearDeltaTicks();
+        const int32_t d = enc_.getDelta();
         const float tpr = cfg_.use_encoder_tpr ? enc_.ticksPerRev() : cfg_.ticks_per_rev;
         float rpm = 0.0f;
         if (tpr > 0 && dt > 0.0f) {
