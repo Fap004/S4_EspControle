@@ -5,6 +5,7 @@
 extern "C" {
 #endif
 
+//#define MSG_DATA_LEN 8
 // MSG_DATA_LEN doit rester 2 dans com.h
 // Format 16 bits: [15..3]=speed13, [2..1]=dir2, [0]=type1
 
@@ -20,10 +21,10 @@ enum {
     PROTO_DIR_RSV  = 3
 };
 
-static inline uint16_t proto_pack(uint16_t speed13, uint8_t dir2, uint8_t type1)
-{
-    return (uint16_t)(((speed13 & 0x1FFF) << 3) | ((dir2 & 0x03) << 1) | (type1 & 0x01));
-}
+//static inline uint16_t proto_pack(uint16_t speed13, uint8_t dir2, uint8_t type1)
+//{
+//    return (uint16_t)(((speed13 & 0x1FFF) << 3) | ((dir2 & 0x03) << 1) | (type1 & 0x01));
+//}
 
 static inline void proto_unpack(uint16_t w, uint16_t *speed13, uint8_t *dir2, uint8_t *type1)
 {

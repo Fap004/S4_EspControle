@@ -46,12 +46,12 @@ static void apply_test_sequence(AppContext* ctx, float dt_s, TickType_t* plast)
 
     switch (phase)
     {
-        case 0: v_target = +0.6f; w_target =  0.0f;  break; // avancer
-        case 1: v_target = -0.6f; w_target =  0.0f;  break; // reculer
-        case 2: v_target =  0.0f; w_target =  0.0f;  break; // stop
-        case 3: v_target =  0.0f; w_target = +1.2f;  break; // rotation gauche
-        case 4: v_target =  0.0f; w_target = -1.2f;  break; // rotation droite
-        case 5: v_target =  0.0f; w_target =  0.0f;  break; // stop
+        case 0: v_target = 0.6f; w_target =  0.0f;  break; // avancer
+        case 1: v_target = 0.6f; w_target =  0.0f;  break; // reculer
+        case 2: v_target = 0.6f; w_target =  0.0f;  break; // stop
+        case 3: v_target = 0.6f; w_target =  0.0f;  break; // rotation gauche
+        case 4: v_target = 0.6f; w_target =  0.0f;  break; // rotation droite
+        case 5: v_target = 0.6f; w_target =  0.0f;  break; // stop
         default: phase = 0; break;
     }
 
@@ -70,7 +70,8 @@ static void apply_test_sequence(AppContext* ctx, float dt_s, TickType_t* plast)
     ctx->drive.setVW(v, w);
     ctx->drive.update(dt_s);
 
-    if (++counter >= 200) {   // ≈ 2 s par phase
+    if (++counter >= 200)   
+    {   
         counter = 0;
         phase   = (phase + 1) % 6;
         ESP_LOGI(TAG, "[TEST] phase=%d (v=%.2f m/s, w=%.2f rad/s)", phase, v, w);
@@ -120,10 +121,18 @@ static void vTaskControlLoop(void* arg)
         w_smooth = ramp(w_smooth, last_cmd.omega,   dw_max_norm, dt);
 
         // Appliquer la consigne haut niveau (centralisation DriveBase)
-        ctx->drive.setVW(v_smooth, w_smooth);
+                ////////////////////////
+        //ctx->drive.setVW(v_smooth, w_smooth);
 
         // Mise à jour des deux roues via DriveBase
-        ctx->drive.update(dt);
+                ////////////////////////
+        //ctx->drive.update(dt);
+
+        ctx->wheel_left.setTargetRpm(200);
+        ctx->wheel_right.setTargetRpm(200);
+
+        ctx->wheel_left.update(dt);
+        ctx->wheel_right.update(dt);
 
         // Télémétrie (optionnel)
         AppContext::Telemetry tlm {

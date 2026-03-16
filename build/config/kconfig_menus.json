@@ -463,6 +463,16 @@
         "children": [],
         "depends_on": null,
         "help": null,
+        "id": "SOC_PMU_PVT_SUPPORTED",
+        "name": "SOC_PMU_PVT_SUPPORTED",
+        "range": null,
+        "title": null,
+        "type": "bool"
+    },
+    {
+        "children": [],
+        "depends_on": null,
+        "help": null,
         "id": "SOC_PAU_SUPPORTED",
         "name": "SOC_PAU_SUPPORTED",
         "range": null,
@@ -3723,6 +3733,16 @@
         "children": [],
         "depends_on": null,
         "help": null,
+        "id": "SOC_PM_MODEM_RF_FLAG_UPDATE_WORKAROUND",
+        "name": "SOC_PM_MODEM_RF_FLAG_UPDATE_WORKAROUND",
+        "range": null,
+        "title": null,
+        "type": "bool"
+    },
+    {
+        "children": [],
+        "depends_on": null,
+        "help": null,
         "id": "SOC_PM_PAU_LINK_NUM",
         "name": "SOC_PM_PAU_LINK_NUM",
         "range": null,
@@ -3973,6 +3993,16 @@
         "children": [],
         "depends_on": null,
         "help": null,
+        "id": "SOC_WIFI_TXOP_SUPPORT",
+        "name": "SOC_WIFI_TXOP_SUPPORT",
+        "range": null,
+        "title": null,
+        "type": "bool"
+    },
+    {
+        "children": [],
+        "depends_on": null,
+        "help": null,
         "id": "SOC_WIFI_CSI_SUPPORT",
         "name": "SOC_WIFI_CSI_SUPPORT",
         "range": null,
@@ -4095,6 +4125,16 @@
         "help": null,
         "id": "SOC_BLE_MULTI_CONN_OPTIMIZATION",
         "name": "SOC_BLE_MULTI_CONN_OPTIMIZATION",
+        "range": null,
+        "title": null,
+        "type": "bool"
+    },
+    {
+        "children": [],
+        "depends_on": null,
+        "help": null,
+        "id": "SOC_BLE_PERIODIC_ADV_WITH_RESPONSE",
+        "name": "SOC_BLE_PERIODIC_ADV_WITH_RESPONSE",
         "range": null,
         "title": null,
         "type": "bool"
@@ -6503,6 +6543,16 @@
         "help": null,
         "id": "ESP_ROM_HAS_SUBOPTIMAL_NEWLIB_ON_MISALIGNED_MEMORY",
         "name": "ESP_ROM_HAS_SUBOPTIMAL_NEWLIB_ON_MISALIGNED_MEMORY",
+        "range": null,
+        "title": null,
+        "type": "bool"
+    },
+    {
+        "children": [],
+        "depends_on": null,
+        "help": null,
+        "id": "ESP_ROM_SUPPORT_SECURE_BOOT_FAST_WAKEUP",
+        "name": "ESP_ROM_SUPPORT_SECURE_BOOT_FAST_WAKEUP",
         "range": null,
         "title": null,
         "type": "bool"
@@ -8972,7 +9022,7 @@
                     {
                         "children": [],
                         "depends_on": "SOC_GPSPI_SUPPORTED",
-                        "help": "Normally only the ISR of SPI slave is placed in the IRAM, so that it\ncan work without the flash when interrupt is triggered.\nFor other functions, there's some possibility that the flash cache\nmiss when running inside and out of SPI functions, which may increase\nthe interval of SPI transactions.\nEnable this to put ``queue_trans``, ``get_trans_result`` and\n``transmit`` functions into the IRAM to avoid possible cache miss.",
+                        "help": "Normally only the ISR of SPI slave is placed in the IRAM, so that it\ncan work without the flash when interrupt is triggered.\nFor other functions, there is some possibility that the flash cache\nmiss when running inside and out of SPI functions, which may increase\nthe interval of SPI transactions.\nEnable this to put ``queue_trans``, ``get_trans_result`` and\n``transmit`` functions into the IRAM to avoid possible cache miss.",
                         "id": "SPI_SLAVE_IN_IRAM",
                         "name": "SPI_SLAVE_IN_IRAM",
                         "range": null,
@@ -9207,6 +9257,16 @@
             },
             {
                 "children": [
+                    {
+                        "children": [],
+                        "depends_on": null,
+                        "help": null,
+                        "id": "ESP_HW_SUPPORT_FUNC_IN_IRAM",
+                        "name": "ESP_HW_SUPPORT_FUNC_IN_IRAM",
+                        "range": null,
+                        "title": null,
+                        "type": "bool"
+                    },
                     {
                         "children": [
                             {
@@ -9678,6 +9738,26 @@
                                 ],
                                 "title": "Number of cycles for RTC_SLOW_CLK calibration",
                                 "type": "int"
+                            },
+                            {
+                                "children": [],
+                                "depends_on": null,
+                                "help": "Place RTC clock module (all rtc clock functions and const data) into IRAM.",
+                                "id": "RTC_CLK_FUNC_IN_IRAM",
+                                "name": "RTC_CLK_FUNC_IN_IRAM",
+                                "range": null,
+                                "title": "Place RTC clock module functions into IRAM",
+                                "type": "bool"
+                            },
+                            {
+                                "children": [],
+                                "depends_on": null,
+                                "help": "Place RTC time module (all rtc clock functions) into IRAM.",
+                                "id": "RTC_TIME_FUNC_IN_IRAM",
+                                "name": "RTC_TIME_FUNC_IN_IRAM",
+                                "range": null,
+                                "title": "Place RTC time module functions into IRAM",
+                                "type": "bool"
                             }
                         ],
                         "depends_on": null,
@@ -10779,6 +10859,13 @@
                 "depends_on": null,
                 "id": "component-config-power-management",
                 "title": "Power Management",
+                "type": "menu"
+            },
+            {
+                "children": [],
+                "depends_on": "!APP_BUILD_TYPE_PURE_RAM_APP",
+                "id": "component-config-esp-psram",
+                "title": "ESP PSRAM",
                 "type": "menu"
             },
             {
@@ -13043,16 +13130,6 @@
                                                 "range": null,
                                                 "title": "Scan results expiry window (in seconds)",
                                                 "type": "int"
-                                            },
-                                            {
-                                                "children": [],
-                                                "depends_on": "ESP_WIFI_ENABLE_ROAMING_APP && (ESP_WIFI_ENABLED || ESP_HOST_WIFI_ENABLED)",
-                                                "help": "Max candidates that can be considered while scanning as a part of the\nnetwork at one time.",
-                                                "id": "ESP_WIFI_ROAMING_MAX_CANDIDATES",
-                                                "name": "ESP_WIFI_ROAMING_MAX_CANDIDATES",
-                                                "range": null,
-                                                "title": "Max Candidates in the network",
-                                                "type": "int"
                                             }
                                         ],
                                         "depends_on": "ESP_WIFI_ENABLE_ROAMING_APP && (ESP_WIFI_ENABLED || ESP_HOST_WIFI_ENABLED)",
@@ -13100,6 +13177,76 @@
                                         "range": null,
                                         "title": "Send periodic neighbor report request to AP for internal list updation",
                                         "type": "bool"
+                                    },
+                                    {
+                                        "children": [
+                                            {
+                                                "children": [
+                                                    {
+                                                        "children": [
+                                                            {
+                                                                "children": [],
+                                                                "depends_on": "ESP_WIFI_ROAMING_AUTO_BLACKLISTING && ESP_WIFI_ENABLE_ROAMING_APP && (ESP_WIFI_ENABLED || ESP_HOST_WIFI_ENABLED)",
+                                                                "help": "Maximum number of connection failures before a BSSID is blacklisted.",
+                                                                "id": "ESP_WIFI_ROAMING_MAX_CONN_FAILURES",
+                                                                "name": "ESP_WIFI_ROAMING_MAX_CONN_FAILURES",
+                                                                "range": null,
+                                                                "title": "Maximum connection failures",
+                                                                "type": "int"
+                                                            }
+                                                        ],
+                                                        "depends_on": "ESP_WIFI_ROAMING_BSSID_BLACKLIST && ESP_WIFI_ENABLE_ROAMING_APP && (ESP_WIFI_ENABLED || ESP_HOST_WIFI_ENABLED)",
+                                                        "help": "Enable this to automatically blacklist BSSIDs after multiple failed connection attempts.",
+                                                        "id": "ESP_WIFI_ROAMING_AUTO_BLACKLISTING",
+                                                        "name": "ESP_WIFI_ROAMING_AUTO_BLACKLISTING",
+                                                        "range": null,
+                                                        "title": "Enable automatic BSSID blacklisting",
+                                                        "type": "bool"
+                                                    },
+                                                    {
+                                                        "children": [],
+                                                        "depends_on": "ESP_WIFI_ROAMING_BSSID_BLACKLIST && ESP_WIFI_ENABLE_ROAMING_APP && (ESP_WIFI_ENABLED || ESP_HOST_WIFI_ENABLED)",
+                                                        "help": "Time in seconds for which a BSSID remains in the blacklist.\nThis applies to both automatically and manually blacklisted BSSIDs.",
+                                                        "id": "ESP_WIFI_ROAMING_BLACKLIST_TIMEOUT",
+                                                        "name": "ESP_WIFI_ROAMING_BLACKLIST_TIMEOUT",
+                                                        "range": null,
+                                                        "title": "Blacklist timeout (in seconds)",
+                                                        "type": "int"
+                                                    }
+                                                ],
+                                                "depends_on": "ESP_WIFI_ENABLE_ROAMING_APP && (ESP_WIFI_ENABLED || ESP_HOST_WIFI_ENABLED)",
+                                                "help": "Enable this to blacklist BSSIDs.",
+                                                "id": "ESP_WIFI_ROAMING_BSSID_BLACKLIST",
+                                                "name": "ESP_WIFI_ROAMING_BSSID_BLACKLIST",
+                                                "range": null,
+                                                "title": "Enable BSSID blacklisting",
+                                                "type": "bool"
+                                            },
+                                            {
+                                                "children": [],
+                                                "depends_on": "ESP_WIFI_ENABLE_ROAMING_APP && (ESP_WIFI_ENABLED || ESP_HOST_WIFI_ENABLED)",
+                                                "help": "Maximum number of roaming candidates to consider. This also defines the size of the blacklist.",
+                                                "id": "ESP_WIFI_ROAMING_MAX_CANDIDATES",
+                                                "name": "ESP_WIFI_ROAMING_MAX_CANDIDATES",
+                                                "range": null,
+                                                "title": "Maximum number of roaming candidates",
+                                                "type": "int"
+                                            },
+                                            {
+                                                "children": [],
+                                                "depends_on": "ESP_WIFI_ENABLE_ROAMING_APP && (ESP_WIFI_ENABLED || ESP_HOST_WIFI_ENABLED)",
+                                                "help": "If the currently connected AP sends a \"transition disable\" bit,\nthis option will make the roaming logic ignore less secure APs.\nThis helps prevent security downgrades when roaming in a mixed\nsecurity environment (e.g., WPA2/WPA3).",
+                                                "id": "ESP_WIFI_ROAMING_PREVENT_DOWNGRADE",
+                                                "name": "ESP_WIFI_ROAMING_PREVENT_DOWNGRADE",
+                                                "range": null,
+                                                "title": "Prevent security downgrade when roaming",
+                                                "type": "bool"
+                                            }
+                                        ],
+                                        "depends_on": "ESP_WIFI_ENABLE_ROAMING_APP && (ESP_WIFI_ENABLED || ESP_HOST_WIFI_ENABLED)",
+                                        "id": "component-config-wi-fi-advanced-support-for-wi-fi-roaming-experimental--configure-roaming-app-blacklist-configuration",
+                                        "title": "Blacklist Configuration",
+                                        "type": "menu"
                                     }
                                 ],
                                 "depends_on": "ESP_WIFI_ENABLE_ROAMING_APP && (ESP_WIFI_ENABLED || ESP_HOST_WIFI_ENABLED)",
@@ -13297,6 +13444,16 @@
                         "name": "ESP_WIFI_ENTERPRISE_SUPPORT",
                         "range": null,
                         "title": "Enable enterprise option",
+                        "type": "bool"
+                    },
+                    {
+                        "children": [],
+                        "depends_on": "ESP_WIFI_ENHANCED_LIGHT_SLEEP && (ESP_WIFI_ENABLED || ESP_HOST_WIFI_ENABLED)",
+                        "help": "Enable debug assertions to verify modem RF flag update operations.\nThis option enables assert checks to verify that modem RF power state\nis correctly cleared before pmu sleep.",
+                        "id": "ESP_WIFI_MODEM_RF_FLAG_UPDATE_DEBUG",
+                        "name": "ESP_WIFI_MODEM_RF_FLAG_UPDATE_DEBUG",
+                        "range": null,
+                        "title": "Enable debug assertions for modem RF flag update",
                         "type": "bool"
                     }
                 ],

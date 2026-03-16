@@ -10,7 +10,7 @@ extern "C" void app_main(void)
     ESP_ERROR_CHECK(appctx_init(ctx));
 
     // MAC du peer (ADAPTER)
-    const uint8_t peer_mac[6] = { 0x20, 0x6E, 0xF1, 0x0D, 0x4D, 0xB8 };
+    const uint8_t peer_mac[6] = { 0x20, 0x6E, 0xF1, 0x09, 0xB3, 0xA0 };//{ 0x20, 0x6E, 0xF1, 0x0D, 0x4D, 0xB8 }
     const uint8_t wifi_channel = 1;
 
     // Démarrer les tâches

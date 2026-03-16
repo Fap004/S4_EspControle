@@ -10,7 +10,7 @@ idf_component_register(
         PcntEncoder
         WheelController
         DriveBase
-        LedcHBridgeDriver
+        McpwmHBridgeDriver
         freertos
         driver
 )

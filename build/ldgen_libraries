@@ -22,6 +22,7 @@ C:/Session4/Projet/Code/EspCar/S4_EspControle/build/esp-idf/vfs/libvfs.a
 C:/Session4/Projet/Code/EspCar/S4_EspControle/build/esp-idf/esp_driver_uart/libesp_driver_uart.a
 C:/Session4/Projet/Code/EspCar/S4_EspControle/build/esp-idf/esp_ringbuf/libesp_ringbuf.a
 C:/Session4/Projet/Code/EspCar/S4_EspControle/build/esp-idf/esp_mm/libesp_mm.a
+C:/Session4/Projet/Code/EspCar/S4_EspControle/build/esp-idf/esp_psram/libesp_psram.a
 C:/Session4/Projet/Code/EspCar/S4_EspControle/build/esp-idf/vfs/libvfs.a
 C:/Session4/Projet/Code/EspCar/S4_EspControle/build/esp-idf/esp_driver_usb_serial_jtag/libesp_driver_usb_serial_jtag.a
 C:/Session4/Projet/Code/EspCar/S4_EspControle/build/esp-idf/esp_vfs_console/libesp_vfs_console.a
@@ -78,6 +79,7 @@ C:/Session4/Projet/Code/EspCar/S4_EspControle/build/esp-idf/esp_driver_pcnt/libe
 C:/Session4/Projet/Code/EspCar/S4_EspControle/build/esp-idf/IEncoder/libIEncoder.a
 C:/Session4/Projet/Code/EspCar/S4_EspControle/build/esp-idf/esp_ringbuf/libesp_ringbuf.a
 C:/Session4/Projet/Code/EspCar/S4_EspControle/build/esp-idf/esp_driver_gptimer/libesp_driver_gptimer.a
+C:/Session4/Projet/Code/EspCar/S4_EspControle/build/esp-idf/esp_psram/libesp_psram.a
 C:/Session4/Projet/Code/EspCar/S4_EspControle/build/esp-idf/esp_driver_spi/libesp_driver_spi.a
 C:/Session4/Projet/Code/EspCar/S4_EspControle/build/esp-idf/esp_driver_mcpwm/libesp_driver_mcpwm.a
 C:/Session4/Projet/Code/EspCar/S4_EspControle/build/esp-idf/esp_driver_i2s/libesp_driver_i2s.a
@@ -115,10 +117,10 @@ C:/Session4/Projet/Code/EspCar/S4_EspControle/build/esp-idf/PcntEncoder/libPcntE
 C:/Session4/Projet/Code/EspCar/S4_EspControle/build/esp-idf/driver/libdriver.a
 C:/Session4/Projet/Code/EspCar/S4_EspControle/build/esp-idf/DriveBase/libDriveBase.a
 C:/Session4/Projet/Code/EspCar/S4_EspControle/build/esp-idf/WheelController/libWheelController.a
-C:/Session4/Projet/Code/EspCar/S4_EspControle/build/esp-idf/LedcHBridgeDriver/libLedcHBridgeDriver.a
+C:/Session4/Projet/Code/EspCar/S4_EspControle/build/esp-idf/McpwmHBridgeDriver/libMcpwmHBridgeDriver.a
 C:/Session4/Projet/Code/EspCar/S4_EspControle/build/esp-idf/AppContext/libAppContext.a
 C:/Session4/Projet/Code/EspCar/S4_EspControle/build/esp-idf/DriveBase/libDriveBase.a
-C:/Session4/Projet/Code/EspCar/S4_EspControle/build/esp-idf/LedcHBridgeDriver/libLedcHBridgeDriver.a
+C:/Session4/Projet/Code/EspCar/S4_EspControle/build/esp-idf/McpwmHBridgeDriver/libMcpwmHBridgeDriver.a
 C:/Session4/Projet/Code/EspCar/S4_EspControle/build/esp-idf/esp_event/libesp_event.a
 C:/Session4/Projet/Code/EspCar/S4_EspControle/build/esp-idf/nvs_flash/libnvs_flash.a
 C:/Session4/Projet/Code/EspCar/S4_EspControle/build/esp-idf/esp_phy/libesp_phy.a

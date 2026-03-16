@@ -4,6 +4,145 @@
 #include "protocol.h"
 #include "com.h"
 
+#include <string.h>
+#include <stdio.h>
+
+// Petit bloc d'arguments passé aux tâches
+struct RxTxArgs {
+    AppContext* ctx;
+    uint8_t     peer[6];
+};
+
+//
+// ---------------- RX ----------------
+// reçoit télémétrie (timestamp + rpmL + rpmR)
+//
+static void vTaskRx(void* arg)
+{
+    RxTxArgs* a = static_cast<RxTxArgs*>(arg);
+    AppContext* ctx = a->ctx;
+
+    uint8_t peer_mac[6];
+    memcpy(peer_mac, a->peer, 6);
+    delete a;
+
+    uint8_t data[MSG_DATA_LEN];
+    size_t  len;
+    uint16_t seq;
+
+    for (;;)
+    {
+        if (com_read_msg_wait(data, &len, &seq, portMAX_DELAY))
+        {
+            if (len != MSG_DATA_LEN) continue;
+
+            uint32_t timestamp =
+                ((uint32_t)data[0] << 24) |
+                ((uint32_t)data[1] << 16) |
+                ((uint32_t)data[2] << 8)  |
+                data[3];
+
+            int16_t rpmL = ((int16_t)data[4] << 8) | data[5];
+            int16_t rpmR = ((int16_t)data[6] << 8) | data[7];
+
+            printf("RX t=%lu rpmL=%d rpmR=%d\n",
+                   (unsigned long)timestamp, rpmL, rpmR);
+        }
+    }
+}
+
+//
+// ---------------- TX ----------------
+// envoie timestamp + encodeurs
+//
+static void vTaskTx(void* arg)
+{
+    RxTxArgs* a = static_cast<RxTxArgs*>(arg);
+    AppContext* ctx = a->ctx;
+
+    uint8_t peer_mac[6];
+    memcpy(peer_mac, a->peer, 6);
+    delete a;
+
+    const TickType_t period = pdMS_TO_TICKS(10); // 100 Hz
+    TickType_t last = xTaskGetTickCount();
+
+    for (;;)
+    {
+        AppContext::Telemetry tlm;
+
+        if (xQueueReceive(ctx->q_tlm, &tlm, 0) != pdTRUE)
+        {
+            tlm.rpmL = ctx->wheel_left.measuredRpm();
+            tlm.rpmR = ctx->wheel_right.measuredRpm();
+        }
+
+        uint32_t timestamp = xTaskGetTickCount() * portTICK_PERIOD_MS;
+
+        int16_t rpmL = (int16_t)tlm.rpmL;
+        int16_t rpmR = (int16_t)tlm.rpmR;
+
+        uint8_t data[MSG_DATA_LEN];
+
+        data[0] = (timestamp >> 24) & 0xFF;
+        data[1] = (timestamp >> 16) & 0xFF;
+        data[2] = (timestamp >> 8)  & 0xFF;
+        data[3] =  timestamp        & 0xFF;
+
+        data[4] = (rpmL >> 8) & 0xFF;
+        data[5] =  rpmL       & 0xFF;
+
+        data[6] = (rpmR >> 8) & 0xFF;
+        data[7] =  rpmR       & 0xFF;
+
+        const esp_err_t err = com_send(peer_mac, data, sizeof(data));
+
+        if (err != ESP_OK)
+        {
+            printf("[TX] com_send err=%d\n", (int)err);
+        }
+
+        vTaskDelayUntil(&last, period);
+    }
+}
+
+//
+// ----------- API (C linkage) -----------
+//
+extern "C" void start_rx_task(AppContext* ctx, UBaseType_t prio,
+                              const uint8_t peer_mac[6], uint8_t channel)
+{
+    com_init(channel);
+    com_add_peer(peer_mac);
+
+    uint8_t my_mac[6];
+    com_get_mac(my_mac);
+
+    printf("[NODE] My MAC: %02X:%02X:%02X:%02X:%02X:%02X\n",
+           my_mac[0], my_mac[1], my_mac[2],
+           my_mac[3], my_mac[4], my_mac[5]);
+
+    auto* a = new RxTxArgs{ ctx, {0} };
+    memcpy(a->peer, peer_mac, 6);
+
+    xTaskCreate(vTaskRx, "rx_task", 4096, a, prio, nullptr);
+}
+
+extern "C" void start_tx_task(AppContext* ctx, UBaseType_t prio,
+                              const uint8_t peer_mac[6])
+{
+    auto* a = new RxTxArgs{ ctx, {0} };
+    memcpy(a->peer, peer_mac, 6);
+
+    xTaskCreate(vTaskTx, "tx_task", 4096, a, prio, nullptr);
+}
+
+/*#include "ComTasks.h"
+#include "freertos/FreeRTOS.h"
+#include "freertos/task.h"
+#include "protocol.h"
+#include "com.h"
+
 #include <math.h>     // fabsf
 #include <string.h>   // memcpy, memset
 #include <stdio.h>    // printf
@@ -127,3 +266,4 @@ extern "C" void start_tx_task(AppContext* ctx, UBaseType_t prio,
     memcpy(a->peer, peer_mac, 6);
     xTaskCreate(vTaskTx, "tx_task", 4096, a, prio, nullptr);
 }
+*/

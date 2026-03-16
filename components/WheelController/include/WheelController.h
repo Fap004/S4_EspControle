@@ -59,9 +59,13 @@ public:
         }
 
         // Signe = sens
-        const bool forward = (u >= 0.0f);
-        motor_.setDirection(forward ? MotorDir::Forward : MotorDir::Reverse);
+        //bool invert_motor = false;  // si probleme dinversement
+        //const bool forward = (u >= 0.0f) ^ invert_motor;
+        //motor_.setDirection(forward ? MotorDir::Forward : MotorDir::Reverse);
+        motor_.setDirection(u >= 0.0f ? MotorDir::Forward : MotorDir::Reverse);
         motor_.setDuty(std::fabs(u)); // |u| ∈ [0..1]
+        //motor_.setDirection(MotorDir::Forward);
+        //motor_.setDuty(0.5);
     }
 
 private:
