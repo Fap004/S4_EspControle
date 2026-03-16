@@ -19,16 +19,16 @@ struct AppContext
 {
     // === Paramétrage matériel ===
     // Moteur gauche
-    gpio_num_t L_INA  = GPIO_NUM_1;
-    gpio_num_t L_INB  = GPIO_NUM_10;
-    gpio_num_t L_SEL0 = GPIO_NUM_11;
-    gpio_num_t L_PWM  = GPIO_NUM_13;
+    gpio_num_t L_INA  = GPIO_NUM_4;
+    gpio_num_t L_INB  = GPIO_NUM_5;
+    gpio_num_t L_SEL0 = GPIO_NUM_6;
+    gpio_num_t L_PWM  = GPIO_NUM_0;
 
     // Moteur droit
-    gpio_num_t R_INA  = GPIO_NUM_5;
-    gpio_num_t R_INB  = GPIO_NUM_4;
-    gpio_num_t R_SEL0 = GPIO_NUM_6;
-    gpio_num_t R_PWM  = GPIO_NUM_0;
+    gpio_num_t R_INA  = GPIO_NUM_1;
+    gpio_num_t R_INB  = GPIO_NUM_10;
+    gpio_num_t R_SEL0 = GPIO_NUM_11;
+    gpio_num_t R_PWM  = GPIO_NUM_13;
 
     // Encodeurs
     gpio_num_t L_ENC_A = GPIO_NUM_22;

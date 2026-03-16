@@ -4,12 +4,9 @@
 #include "esp_log.h"
 
 // ───────────────────────────────────────────────────────────────────────────────
-// Configuration du mode test
-// Active/disable build-time (décommente pour activer par défaut)
-#define CONTROL_TEST_ENABLE 1
+// Configuration du mode test (activé par défaut si macro définie)
+//#define CONTROL_TEST_ENABLE 1
 
-// Runtime switch : false = fonctionnement normal (RX)
-// true  = séquence de test sans COM
 static bool g_test_mode =
 #ifdef CONTROL_TEST_ENABLE
     true;
@@ -40,38 +37,38 @@ static void apply_test_sequence(AppContext* ctx, float dt_s, TickType_t* plast)
     static int phase   = 0;
     static int counter = 0;
 
-    // Consigne cibles (v, w)
+    // Consignes cibles (v, w)
     float v_target = 0.0f;   // m/s
     float w_target = 0.0f;   // rad/s
 
     switch (phase)
     {
-        case 0: v_target = 0.6f; w_target =  0.0f;  break; // avancer
-        case 1: v_target = 0.6f; w_target =  0.0f;  break; // reculer
-        case 2: v_target = 0.6f; w_target =  0.0f;  break; // stop
-        case 3: v_target = 0.6f; w_target =  0.0f;  break; // rotation gauche
-        case 4: v_target = 0.6f; w_target =  0.0f;  break; // rotation droite
-        case 5: v_target = 0.6f; w_target =  0.0f;  break; // stop
+        case 0: v_target = +0.6f; w_target =  0.0f; break; // avancer
+        case 1: v_target = -0.6f; w_target =  0.0f; break; // reculer
+        case 2: v_target =  0.0f; w_target =  0.0f; break; // stop
+        case 3: v_target =  0.0f; w_target = +1.5f; break; // rotation gauche
+        case 4: v_target =  0.0f; w_target = -1.5f; break; // rotation droite
+        case 5: v_target =  0.0f; w_target =  0.0f; break; // stop
         default: phase = 0; break;
     }
 
-    // États lissés (persistent entre appels)
+    // États lissés (persistants entre appels)
     static float v = 0.0f;
     static float w = 0.0f;
 
     // RAMPING (limites d'accélération)
-    const float dv_max = 0.8f;  // m/s²  (↗↘ vitesse linéaire)
-    const float dw_max = 2.5f;  // rad/s² (↗↘ vitesse angulaire)
+    const float dv_max = 0.8f;  // m/s²
+    const float dw_max = 2.5f;  // rad/s²
 
     v = ramp(v, v_target, dv_max, dt_s);
     w = ramp(w, w_target, dw_max, dt_s);
 
-    // Appliquer la consigne lissée via DriveBase (centralisation)
-    ctx->drive.setVW(v, w);
-    ctx->drive.update(dt_s);
+    // Appliquer la consigne lissée via DriveBase
+    //ctx->drive.setVW(v, w);
+    //ctx->drive.update(dt_s);
 
-    if (++counter >= 200)   
-    {   
+    if (++counter >= 200)
+    {
         counter = 0;
         phase   = (phase + 1) % 6;
         ESP_LOGI(TAG, "[TEST] phase=%d (v=%.2f m/s, w=%.2f rad/s)", phase, v, w);
@@ -94,10 +91,10 @@ static void vTaskControlLoop(void* arg)
     // Dernière consigne connue (si rien en queue, on garde ça)
     AppContext::CmdVW last_cmd { .v_mps = 0.0f, .omega = 0.0f };
 
-    // États lissés aussi en mode normal, pour éviter les à-coups venant du RX
+    // États lissés (mode normal)
     float v_smooth = 0.0f;
     float w_smooth = 0.0f;
-    const float dv_max_norm = 0.8f;  // mêmes limites par défaut
+    const float dv_max_norm = 0.8f;
     const float dw_max_norm = 2.5f;
 
     for (;;)
@@ -116,32 +113,28 @@ static void vTaskControlLoop(void* arg)
             last_cmd = cmd;
         }
 
-        // Lissage (rampe) aussi en mode normal pour supprimer les steps RX
-        v_smooth = ramp(v_smooth, last_cmd.v_mps,   dv_max_norm, dt);
-        w_smooth = ramp(w_smooth, last_cmd.omega,   dw_max_norm, dt);
+        // Lissage des consignes (anti à-coups)
+        v_smooth = ramp(v_smooth, last_cmd.v_mps, dv_max_norm, dt);
+        w_smooth = ramp(w_smooth, last_cmd.omega,  dw_max_norm, dt);
 
-        // Appliquer la consigne haut niveau (centralisation DriveBase)
-                ////////////////////////
-        //ctx->drive.setVW(v_smooth, w_smooth);
+        // Cinématique différentielle via DriveBase  ❗Dé-commente si tu veux le chemin complet
+        // ctx->drive.setVW(v_smooth, w_smooth);
+        // ctx->drive.update(dt);
 
-        // Mise à jour des deux roues via DriveBase
-                ////////////////////////
-        //ctx->drive.update(dt);
-
-        ctx->wheel_left.setTargetRpm(200);
-        ctx->wheel_right.setTargetRpm(200);
-
+        // OU : test direct en rpm (bypass DriveBase)
+        ctx->wheel_left.setTargetRpm(50);
+        //ctx->wheel_right.setTargetRpm(50);
         ctx->wheel_left.update(dt);
-        ctx->wheel_right.update(dt);
+        //ctx->wheel_right.update(dt);
 
-        // Télémétrie (optionnel)
+        // Télémétrie (non bloquante)
         AppContext::Telemetry tlm {
             .rpmL = ctx->wheel_left.measuredRpm(),
             .rpmR = ctx->wheel_right.measuredRpm()
         };
-        // Choisis selon la taille de ta queue tlm :
-        // (void)xQueueOverwrite(ctx->q_tlm, &tlm);   // si longueur == 1
-        (void)xQueueSend(ctx->q_tlm, &tlm, 0);        // sinon, en non-bloquant
+        (void)xQueueSend(ctx->q_tlm, &tlm, 0);
+        // Si q_tlm a longueur 1, préfère :
+        // (void)xQueueOverwrite(ctx->q_tlm, &tlm);
 
         vTaskDelayUntil(&last, period);
     }
