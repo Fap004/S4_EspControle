@@ -1,7 +1,7 @@
 // IMotorDriver.h
 #pragma once
 #include <stdint.h>
-enum class MotorDir { Forward, Reverse, Brake };
+enum class MotorDir { Forward, Reverse, Brake, Coast };
 
 class IMotorDriver {
 public:

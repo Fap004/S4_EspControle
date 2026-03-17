@@ -1,55 +1,67 @@
 #include "AppContext.h"
 #include "esp_log.h"
-
-// Pour renseigner les champs unit/timer/op du driver MCPWM (API legacy)
-#include "driver/mcpwm.h"
+#include "esp_check.h"
 
 static const char* TAG = "AppContext";
 
 esp_err_t appctx_init(AppContext& ctx)
 {
-    // ======================
-    //  MCPWM - Moteur gauche
-    // ======================
+    // 1) Config MCPWM
+    // Gauche : Unit0 / Timer0 / A
     ctx.L_cfg.unit        = MCPWM_UNIT_0;
-    ctx.L_cfg.timer       = MCPWM_TIMER_0;     // PWM0A
+    ctx.L_cfg.timer       = MCPWM_TIMER_0;
     ctx.L_cfg.op          = MCPWM_OPR_A;
-    ctx.L_cfg.freq_hz     = 20000;             // 20 kHz (VNH7070BAS OK)
-    ctx.L_cfg.duty_min    = 0.10f;             // 10% : vaincre frottements/quantification
-    ctx.L_cfg.zero_eps    = 0.05f;             // 5% : zone morte autour de 0
-    ctx.L_cfg.deadtime_us = 150;               // dead-time logiciel lors inversion
+    ctx.L_cfg.freq_hz     = 20000;
+    ctx.L_cfg.duty_min    = 0.10f;
+    ctx.L_cfg.zero_eps    = 0.01f;
+    ctx.L_cfg.deadtime_us = 150;
     ctx.L_cfg.idle        = McpwmHBridgeDriver::DecayMode::Coast;
-    ctx.L_cfg.invert_dir  = false;
+    ctx.L_cfg.invert_dir  = false;  // n’inverse PAS le moteur ici
 
-    // =====================
-    //  MCPWM - Moteur droit
-    // =====================
+    // Droite : Unit0 / Timer1 / A
     ctx.R_cfg.unit        = MCPWM_UNIT_0;
-    ctx.R_cfg.timer       = MCPWM_TIMER_1;     // PWM1A (évite conflit avec gauche)
+    ctx.R_cfg.timer       = MCPWM_TIMER_1;
     ctx.R_cfg.op          = MCPWM_OPR_A;
     ctx.R_cfg.freq_hz     = 20000;
     ctx.R_cfg.duty_min    = 0.10f;
-    ctx.R_cfg.zero_eps    = 0.05f;
+    ctx.R_cfg.zero_eps    = 0.01f;
     ctx.R_cfg.deadtime_us = 150;
     ctx.R_cfg.idle        = McpwmHBridgeDriver::DecayMode::Coast;
     ctx.R_cfg.invert_dir  = false;
 
-    // === Init drivers moteurs ===
-    ESP_ERROR_CHECK(ctx.motor_left.init());
-    ESP_ERROR_CHECK(ctx.motor_right.init());
+    // ⚠️ Pousser la config dans les drivers AVANT init()
+    ctx.motor_left.setConfig(ctx.L_cfg);
+    ctx.motor_right.setConfig(ctx.R_cfg);
 
-    // === Init encodeurs (idempotent) ===
-    ESP_ERROR_CHECK(ctx.enc_left.init());
-    ESP_ERROR_CHECK(ctx.enc_right.init());
+    // 2) Init moteurs
+    ESP_RETURN_ON_ERROR(ctx.motor_left.init(),  TAG, "motor_left.init");
+    ESP_RETURN_ON_ERROR(ctx.motor_right.init(), TAG, "motor_right.init");
+    ESP_LOGI(TAG, "MCPWM ready: L{unit=%d,timer=%d,op=%d,pwm=%d} R{unit=%d,timer=%d,op=%d,pwm=%d}",
+             (int)ctx.L_cfg.unit, (int)ctx.L_cfg.timer, (int)ctx.L_cfg.op, (int)ctx.L_PWM,
+             (int)ctx.R_cfg.unit, (int)ctx.R_cfg.timer, (int)ctx.R_cfg.op, (int)ctx.R_PWM);
 
-    // === Queues ===
-    ctx.q_cmd_vw = xQueueCreate(/*length*/8, sizeof(AppContext::CmdVW));
-    ctx.q_tlm    = xQueueCreate(/*length*/8, sizeof(AppContext::Telemetry));
+    // 3) Init encodeurs puis inversion (appliquée après init à chaque boot)
+    ESP_RETURN_ON_ERROR(ctx.enc_left.init(),  TAG, "enc_left.init");
+    ESP_RETURN_ON_ERROR(ctx.enc_right.init(), TAG, "enc_right.init");
+
+    ctx.enc_left.setInverted(true);             // ← la gauche lisait négatif en Forward
+    // ctx.enc_right.setInverted(true);         // ← active si la droite lit négatif
+    ESP_LOGI(TAG, "Encoders ready: L{A=%d,B=%d,inv=%d} R{A=%d,B=%d,inv=%d}",
+             (int)ctx.L_ENC_A, (int)ctx.L_ENC_B, (int)ctx.enc_left.inverted(),
+             (int)ctx.R_ENC_A, (int)ctx.R_ENC_B, (int)ctx.enc_right.inverted());
+
+    // 4) Queues COM (taille 1 pour xQueueOverwrite)
+    if (!ctx.q_cmd_vw) ctx.q_cmd_vw = xQueueCreate(1, sizeof(AppContext::CmdVW));
+    if (!ctx.q_tlm)    ctx.q_tlm    = xQueueCreate(1, sizeof(AppContext::Telemetry));
     if (!ctx.q_cmd_vw || !ctx.q_tlm) {
         ESP_LOGE(TAG, "Queue creation failed");
         return ESP_FAIL;
     }
 
-    ESP_LOGI(TAG, "AppContext init OK (MCPWM @ %u Hz)", ctx.L_cfg.freq_hz);
+    // 5) Multiplexeur & watchdog (LOCAL par défaut)
+    ctx.ctrl_mode        = AppContext::ControlMode::LOCAL;
+    ctx.last_rx_cmd_tick = 0;  // pas encore de commande RX
+
+    ESP_LOGI(TAG, "AppContext init OK (MCPWM @ %u Hz, mode=LOCAL)", ctx.L_cfg.freq_hz);
     return ESP_OK;
 }

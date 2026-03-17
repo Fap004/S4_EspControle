@@ -7,29 +7,6 @@
 
 static const char* TAG = "MAIN";
 
-// --- Petite tâche utilitaire pour logger l'encodeur gauche à 50 Hz ---
-static void vTaskEncDebug(void* arg)
-{
-    AppContext* ctx = static_cast<AppContext*>(arg);
-    const TickType_t period = pdMS_TO_TICKS(20); // 50 Hz
-
-    TickType_t last = xTaskGetTickCount();
-    for (;;)
-    {
-        TickType_t now = xTaskGetTickCount();
-        const float dt = (now - last) * (1.0f / configTICK_RATE_HZ);
-        last = now;
-
-        // Lecture delta + RPM filtrée
-        const int32_t d  = ctx->enc_left.getDelta();
-        const float   rpm = ctx->enc_left.rpm(dt, /*lpf=*/true);
-
-        ESP_LOGI("ENC-L", "d=%ld rpm=%.2f", (long)d, rpm);
-
-        vTaskDelayUntil(&last, period);
-    }
-}
-
 extern "C" void app_main(void)
 {
     static AppContext ctx;  // durée de vie globale (statique)
@@ -45,93 +22,60 @@ extern "C" void app_main(void)
     start_tx_task(&ctx, 5, peer_mac);
 
     // 3) Démarrer la tâche de contrôle (100 Hz)
-    start_control_task(&ctx, /*prio=*/7);
-
-    // 4) (Option) petite tâche de debug encodeur (50 Hz)
-    //xTaskCreate(vTaskEncDebug, "enc_dbg", 3072, &ctx, /*prio=*/4, nullptr);
-
+    start_control_task(&ctx,7);
+    
     ESP_LOGI(TAG, "app_main: init OK, tasks started");
     // app_main() retourne, FreeRTOS prend la main.
 }
-/*
-#include <stdio.h>
+
+/*#include "driver/gpio.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
-#include "driver/gpio.h"
-#include "driver/ledc.h"
+#include "esp_log.h"
 
-#define INA   GPIO_NUM_1
-#define INB   GPIO_NUM_10
-#define SEL0  GPIO_NUM_11
-#define PWM   GPIO_NUM_13
+static void vTaskOpenLoopLeft(void* arg)
+{
+    // Adapte ces #define à TES pins (celles d’AppContext)
+    const gpio_num_t INA = GPIO_NUM_4;   // L_INA
+    const gpio_num_t INB = GPIO_NUM_5;   // L_INB
+    const gpio_num_t SEL = GPIO_NUM_6;   // L_SEL0
+    const gpio_num_t PWM = GPIO_NUM_0;   // L_PWM
+
+    gpio_config_t io = {};
+    io.mode = GPIO_MODE_OUTPUT;
+    io.pin_bit_mask = (1ULL<<INA) | (1ULL<<INB) | (1ULL<<SEL) | (1ULL<<PWM);
+    io.pull_down_en = GPIO_PULLDOWN_DISABLE;
+    io.pull_up_en   = GPIO_PULLUP_DISABLE;
+    io.intr_type    = GPIO_INTR_DISABLE;
+    gpio_config(&io);
+
+    // 1) Forward plein pot : INA=1, INB=0, PWM=1 (continu = 100% duty)
+    gpio_set_level(SEL, 0);  // SEL0 peu importe pour tourner; 0 par défaut
+    gpio_set_level(INA, 1);
+    gpio_set_level(INB, 0);
+    gpio_set_level(PWM, 1);
+    ESP_LOGI("OPEN", "LEFT FORWARD FULL (2s)...");
+    vTaskDelay(pdMS_TO_TICKS(2000));
+
+    // 2) Stop
+    gpio_set_level(PWM, 0);
+    vTaskDelay(pdMS_TO_TICKS(1000));
+
+    // 3) Reverse plein pot : INA=0, INB=1, PWM=1
+    gpio_set_level(INA, 0);
+    gpio_set_level(INB, 1);
+    gpio_set_level(PWM, 1);
+    ESP_LOGI("OPEN", "LEFT REVERSE FULL (2s)...");
+    vTaskDelay(pdMS_TO_TICKS(2000));
+
+    // Stop et fin
+    gpio_set_level(PWM, 0);
+    ESP_LOGI("OPEN", "DONE");
+    vTaskDelete(nullptr);
+}
 
 extern "C" void app_main(void)
 {
-    // GPIO
-    gpio_set_direction(INA,  GPIO_MODE_OUTPUT);
-    gpio_set_direction(INB,  GPIO_MODE_OUTPUT);
-    gpio_set_direction(SEL0, GPIO_MODE_OUTPUT);
-    gpio_set_level(SEL0, 1); // arbitraire pour test
-
-    // PWM (LEDC)
-    ledc_timer_config_t timer = {
-        .speed_mode       = LEDC_LOW_SPEED_MODE,
-        .duty_resolution  = LEDC_TIMER_8_BIT,  // 0..255
-        .timer_num        = LEDC_TIMER_0,
-        .freq_hz          = 20000,             // ≤ 20 kHz (datasheet)
-        .clk_cfg          = LEDC_AUTO_CLK
-    };
-    ledc_timer_config(&timer); // IMPORTANT
-
-    ledc_channel_config_t channel = {
-        .gpio_num       = PWM,
-        .speed_mode     = LEDC_LOW_SPEED_MODE,
-        .channel        = LEDC_CHANNEL_0,
-        .timer_sel      = LEDC_TIMER_0,
-        .duty           = 0,
-        .hpoint         = 0
-    };
-    ledc_channel_config(&channel);
-
-    while (1) {
-        // Sens 1
-        gpio_set_level(INA, 1);
-        gpio_set_level(INB, 0);
-
-        // Coup de démarrage (100%)
-        ledc_set_duty(LEDC_LOW_SPEED_MODE, LEDC_CHANNEL_0, 255);
-        ledc_update_duty(LEDC_LOW_SPEED_MODE, LEDC_CHANNEL_0);
-        vTaskDelay(pdMS_TO_TICKS(400));
-
-        // Vitesse de croisière (~70%)
-        ledc_set_duty(LEDC_LOW_SPEED_MODE, LEDC_CHANNEL_0, 180);
-        ledc_update_duty(LEDC_LOW_SPEED_MODE, LEDC_CHANNEL_0);
-        printf("Forward\n");
-        vTaskDelay(pdMS_TO_TICKS(3000));
-
-        // Stop
-        ledc_set_duty(LEDC_LOW_SPEED_MODE, LEDC_CHANNEL_0, 0);
-        ledc_update_duty(LEDC_LOW_SPEED_MODE, LEDC_CHANNEL_0);
-        vTaskDelay(pdMS_TO_TICKS(2000));
-
-        // Sens 2
-        gpio_set_level(INA, 0);
-        gpio_set_level(INB, 1);
-
-        // Coup de démarrage
-        ledc_set_duty(LEDC_LOW_SPEED_MODE, LEDC_CHANNEL_0, 255);
-        ledc_update_duty(LEDC_LOW_SPEED_MODE, LEDC_CHANNEL_0);
-        vTaskDelay(pdMS_TO_TICKS(400));
-
-        ledc_set_duty(LEDC_LOW_SPEED_MODE, LEDC_CHANNEL_0, 180);
-        ledc_update_duty(LEDC_LOW_SPEED_MODE, LEDC_CHANNEL_0);
-        printf("Reverse\n");
-        vTaskDelay(pdMS_TO_TICKS(3000));
-
-        // Stop
-        ledc_set_duty(LEDC_LOW_SPEED_MODE, LEDC_CHANNEL_0, 0);
-        ledc_update_duty(LEDC_LOW_SPEED_MODE, LEDC_CHANNEL_0);
-        vTaskDelay(pdMS_TO_TICKS(2000));
-    }
+    xTaskCreate(vTaskOpenLoopLeft, "open_L", 2048, nullptr, 8, nullptr);
 }
 */

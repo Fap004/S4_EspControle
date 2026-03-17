@@ -1,6 +1,10 @@
 #pragma once
 
-#include "McpwmHBridgeDriver.h"   // <- driver moteur (MCPWM)
+#include <cstdint>
+#include <algorithm>
+#include <cmath>
+
+#include "McpwmHBridgeDriver.h"   // driver moteur (MCPWM legacy)
 #include "IMotorDriver.h"
 #include "PcntEncoder.h"
 #include "PIDController.h"
@@ -30,11 +34,11 @@ struct AppContext
     gpio_num_t R_SEL0 = GPIO_NUM_11;
     gpio_num_t R_PWM  = GPIO_NUM_13;
 
-    // Encodeurs
-    gpio_num_t L_ENC_A = GPIO_NUM_22;//inverser test
-    gpio_num_t L_ENC_B = GPIO_NUM_21;//inverser test
-    gpio_num_t R_ENC_A = GPIO_NUM_20;
-    gpio_num_t R_ENC_B = GPIO_NUM_19;
+    // Encodeurs (A/B quadrature)
+    gpio_num_t L_ENC_A = GPIO_NUM_21;
+    gpio_num_t L_ENC_B = GPIO_NUM_22;
+    gpio_num_t R_ENC_A = GPIO_NUM_19;
+    gpio_num_t R_ENC_B = GPIO_NUM_20;
 
     // === Instances bas niveau (MCPWM) ===
     McpwmHBridgeDriver::Config L_cfg{};
@@ -43,18 +47,19 @@ struct AppContext
     McpwmHBridgeDriver::Pins  L_pins{ L_INA, L_INB, L_PWM, L_SEL0 };
     McpwmHBridgeDriver::Pins  R_pins{ R_INA, R_INB, R_PWM, R_SEL0 };
 
-    McpwmHBridgeDriver        motor_left { L_pins, L_cfg };
-    McpwmHBridgeDriver        motor_right{ R_pins, R_cfg };
+    McpwmHBridgeDriver        motor_left  { L_pins, L_cfg };
+    McpwmHBridgeDriver        motor_right { R_pins, R_cfg };
 
     // === Encodeurs ===
-    static constexpr float TPR_LEFT  = 300.0f;  // ← mets ta valeur mesurée
-    static constexpr float TPR_RIGHT = 300.0f;  // ← idem
+    static constexpr float TPR_LEFT  = 68.0f;  // 17 PPR ×4
+    static constexpr float TPR_RIGHT = 68.0f;
 
     PcntEncoder enc_left  { L_ENC_A, L_ENC_B, TPR_LEFT  };
     PcntEncoder enc_right { R_ENC_A, R_ENC_B, TPR_RIGHT };
 
     // === PID & WheelControllers ===
-    PIDController::Gains  gains { .Kp = 0.05f, .Ki = 0.0000f, .Kd = 0.0f };
+    // Gains "safe" pour démarrer sans saturation ; on ajustera ensuite
+    PIDController::Gains  gains { .Kp = 0.008f, .Ki = 0.0f, .Kd = 0.0f };
     PIDController::Limits lims  { .u_min = -1.0f, .u_max = +1.0f, .i_min = -0.5f, .i_max = +0.5f };
 
     PIDController pid_left  { gains, lims };
@@ -74,10 +79,17 @@ struct AppContext
     DriveBase::Geometry geom { .wheel_radius_m = 0.035f, .track_width_m = 0.180f };
     DriveBase drive { wheel_left, wheel_right, geom, /*rpm_max=*/7000.0f };
 
+    // === Sélecteur de source de consigne & watchdog RX ===
+    enum class ControlMode : uint8_t { LOCAL, REMOTE };
+    ControlMode ctrl_mode = ControlMode::LOCAL;           // LOCAL par défaut
+    TickType_t  last_rx_cmd_tick = 0;                     // horodatage du dernier cmd RX
+    TickType_t  RX_CMD_TIMEOUT   = pdMS_TO_TICKS(200);    // >200 ms sans RX => retour LOCAL
+
     // === Communication (queues) ===
     struct CmdVW     { float v_mps; float omega; };
     struct Telemetry { float rpmL;  float rpmR;  };
 
+    // Taille 1 pour utiliser xQueueOverwrite() (toujours la dernière donnée)
     QueueHandle_t q_cmd_vw = nullptr;  // commandes haut-niveau (v, ω)
     QueueHandle_t q_tlm    = nullptr;  // télémétrie
 };

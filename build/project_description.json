@@ -1,7 +1,7 @@
 {
     "version":            "1.2",
     "project_name":       "Esp_car",
-    "project_version":    "3b5f80f-dirty",
+    "project_version":    "86ec3a5-dirty",
     "project_path":       "C:/Session4/Projet/Code/EspCar/S4_EspControle",
     "idf_path":           "C:/esp/v5.5.3/esp-idf",
     "build_dir":          "C:/Session4/Projet/Code/EspCar/S4_EspControle/build",
