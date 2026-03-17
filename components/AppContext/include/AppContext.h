@@ -31,8 +31,8 @@ struct AppContext
     gpio_num_t R_PWM  = GPIO_NUM_13;
 
     // Encodeurs
-    gpio_num_t L_ENC_A = GPIO_NUM_21;//inverser test
-    gpio_num_t L_ENC_B = GPIO_NUM_22;//inverser test
+    gpio_num_t L_ENC_A = GPIO_NUM_22;//inverser test
+    gpio_num_t L_ENC_B = GPIO_NUM_21;//inverser test
     gpio_num_t R_ENC_A = GPIO_NUM_20;
     gpio_num_t R_ENC_B = GPIO_NUM_19;
 
@@ -47,8 +47,8 @@ struct AppContext
     McpwmHBridgeDriver        motor_right{ R_pins, R_cfg };
 
     // === Encodeurs ===
-    static constexpr float TPR_LEFT  = 68.0f;  // ← mets ta valeur mesurée
-    static constexpr float TPR_RIGHT = 68.0f;  // ← idem
+    static constexpr float TPR_LEFT  = 300.0f;  // ← mets ta valeur mesurée
+    static constexpr float TPR_RIGHT = 300.0f;  // ← idem
 
     PcntEncoder enc_left  { L_ENC_A, L_ENC_B, TPR_LEFT  };
     PcntEncoder enc_right { R_ENC_A, R_ENC_B, TPR_RIGHT };
