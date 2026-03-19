@@ -18,11 +18,11 @@ extern "C" void app_main(void)
     // Remets ta MAC “peer” si tu l’utilises
     const uint8_t peer_mac[6]   = { 0x20, 0x6E, 0xF1, 0x09, 0xB3, 0xA0 };
     const uint8_t wifi_channel  = 1;
-    start_rx_task(&ctx, 6, peer_mac, wifi_channel);
-    start_tx_task(&ctx, 5, peer_mac);
+    start_rx_task(&ctx, 2, peer_mac, wifi_channel);
+    start_tx_task(&ctx, 2, peer_mac);
 
     // 3) Démarrer la tâche de contrôle (100 Hz)
-    start_control_task(&ctx,7);
+    start_control_task(&ctx,3);
     
     ESP_LOGI(TAG, "app_main: init OK, tasks started");
     // app_main() retourne, FreeRTOS prend la main.

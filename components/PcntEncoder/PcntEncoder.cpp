@@ -90,7 +90,7 @@ esp_err_t PcntEncoder::init()
             pcnt_glitch_filter_config_t f = { .max_glitch_ns = ns };
             if (pcnt_unit_set_glitch_filter(unitA_, &f) == ESP_OK) {
                 glitch_ns_ = ns; set_ok = true;
-                ESP_LOGI(TAG_Q, "glitch filter set to %u ns", ns);
+                //ESP_LOGI(TAG_Q, "glitch filter set to %u ns", ns);
                 break;
             }
         }
@@ -107,8 +107,8 @@ esp_err_t PcntEncoder::init()
     accum_total_ = 0;
     rpm_lpf_     = 0.0f;
 
-    ESP_LOGI(TAG_Q, "PCNT QUAD OK: A=%d B=%d TPR=%.1f glitch=%u ns inverted=%d",
-             (int)pinA_, (int)pinB_, ticks_per_rev_, glitch_ns_, inverted_);
+    //ESP_LOGI(TAG_Q, "PCNT QUAD OK: A=%d B=%d TPR=%.1f glitch=%u ns inverted=%d",
+    //         (int)pinA_, (int)pinB_, ticks_per_rev_, glitch_ns_, inverted_);
     return ESP_OK;
 }
 

@@ -1,4 +1,5 @@
 #pragma once
+#include "freertos/FreeRTOS.h"  // ← UBaseType_t vient d'ici
 #include "AppContext.h"
 
 #ifdef __cplusplus
