@@ -16,6 +16,9 @@
 #include "esp_err.h"
 #include "driver/gpio.h"
 
+#include "McpwmServo.h"
+#include "SteeringController.h"
+
 // ----------------------------------------------------------------------------
 // AppContext : regroupe les objets "longue durée" et ressources partagées
 // ----------------------------------------------------------------------------
@@ -91,6 +94,11 @@ struct AppContext
     // === DriveBase ===
     DriveBase::Geometry geom { .wheel_radius_m = 0.035f, .track_width_m = 0.180f };
     DriveBase drive { wheel_left, wheel_right, geom, /*rpm_max=*/8000.0f };
+
+    // === Servo de direction (GPIO 23) ===
+    McpwmServo::Config servo_cfg{};  // valeurs par défaut : 500 Hz, 50%, TIMER_2
+    McpwmServo         servo { GPIO_NUM_23, servo_cfg };
+    SteeringController steering { servo, -30.0f, +30.0f };
 
     // === Sélecteur de mode & watchdog RX ===
     enum class ControlMode : uint8_t { LOCAL, REMOTE };

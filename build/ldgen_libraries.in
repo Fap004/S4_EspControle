@@ -118,9 +118,15 @@ $<TARGET_FILE:__idf_PcntEncoder>
 $<TARGET_FILE:idf::DriveBase>
 $<TARGET_FILE:__idf_WheelController>
 $<TARGET_FILE:idf::McpwmHBridgeDriver>
+$<TARGET_FILE:idf::IServo>
+$<TARGET_FILE:idf::McpwmServo>
+$<TARGET_FILE:__idf_IServo>
+$<TARGET_FILE:idf::SteeringController>
 $<TARGET_FILE:idf::AppContext>
 $<TARGET_FILE:__idf_DriveBase>
 $<TARGET_FILE:__idf_McpwmHBridgeDriver>
+$<TARGET_FILE:__idf_McpwmServo>
+$<TARGET_FILE:__idf_SteeringController>
 $<TARGET_FILE:idf::esp_event>
 $<TARGET_FILE:idf::nvs_flash>
 $<TARGET_FILE:idf::esp_phy>

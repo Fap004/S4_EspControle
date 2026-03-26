@@ -13,4 +13,6 @@ idf_component_register(
         McpwmHBridgeDriver
         freertos
         driver
+        McpwmServo
+        SteeringController
 )

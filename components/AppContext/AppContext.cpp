@@ -57,8 +57,11 @@ esp_err_t appctx_init(AppContext& ctx)
         ESP_LOGE(TAG, "Queue creation failed");
         return ESP_FAIL;
     }
+    // 5) Init servo de direction (GPIO 23)
+    ESP_RETURN_ON_ERROR(ctx.servo.init(), TAG, "servo.init");
+    ESP_LOGI(TAG, "Servo direction OK: GPIO 23, 500 Hz, 50%% duty");
 
-    // 5) Multiplexeur & watchdog (LOCAL par défaut)
+    // 6) Multiplexeur & watchdog (LOCAL par défaut)
     ctx.ctrl_mode        = AppContext::ControlMode::LOCAL;
     ctx.last_rx_cmd_tick = 0;  // pas encore de commande RX
 
