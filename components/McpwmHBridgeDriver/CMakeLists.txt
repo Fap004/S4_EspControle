@@ -7,4 +7,5 @@ idf_component_register(
         driver          # ← le pilote MCPWM legacy est dans ce composant
         esp_rom         # ← pour esp_rom_delay_us()
         IMotorDriver
+        AppContext
 )

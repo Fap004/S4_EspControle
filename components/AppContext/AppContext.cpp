@@ -27,7 +27,7 @@ esp_err_t appctx_init(AppContext& ctx)
     ctx.R_cfg.zero_eps    = 0.01f;
     ctx.R_cfg.deadtime_us = 150;
     ctx.R_cfg.idle        = McpwmHBridgeDriver::DecayMode::Coast;
-    ctx.R_cfg.invert_dir  = false;
+    ctx.R_cfg.invert_dir  = true;
 
     // ⚠️ Pousser la config dans les drivers AVANT init()
     ctx.motor_left.setConfig(ctx.L_cfg);
@@ -45,7 +45,8 @@ esp_err_t appctx_init(AppContext& ctx)
     ESP_RETURN_ON_ERROR(ctx.enc_right.init(), TAG, "enc_right.init");
 
     ctx.enc_left.setInverted(true);             // ← la gauche lisait négatif en Forward
-    ctx.enc_right.setInverted(true);         // ← active si la droite lit négatif
+    //ctx.enc_right.setInverted(true);         // ← active si la droite lit négatif
+    
     ESP_LOGI(TAG, "Encoders ready: L{A=%d,B=%d,inv=%d} R{A=%d,B=%d,inv=%d}",
              (int)ctx.L_ENC_A, (int)ctx.L_ENC_B, (int)ctx.enc_left.inverted(),
              (int)ctx.R_ENC_A, (int)ctx.R_ENC_B, (int)ctx.enc_right.inverted());

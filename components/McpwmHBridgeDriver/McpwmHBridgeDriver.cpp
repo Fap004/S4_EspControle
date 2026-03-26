@@ -129,8 +129,8 @@ void McpwmHBridgeDriver::setDuty(float duty01)
         mcpwm_set_duty(cfg_.unit, cfg_.timer, cfg_.op, 0.0f);
         mcpwm_set_duty_type(cfg_.unit, cfg_.timer, cfg_.op, MCPWM_DUTY_MODE_0);
         applyIdle();
-        ESP_LOGI(TAG, "dir=%s duty=0.00 (idle)",
-                 dir_ == MotorDir::Forward ? "F" : "R");
+        //ESP_LOGI(TAG, "dir=%s duty=0.00 (idle)",
+        //         dir_ == MotorDir::Forward ? "F" : "R");
         return;
     }
 
@@ -139,9 +139,9 @@ void McpwmHBridgeDriver::setDuty(float duty01)
     mcpwm_set_duty(cfg_.unit, cfg_.timer, cfg_.op, duty01 * 100.0f);
     mcpwm_set_duty_type(cfg_.unit, cfg_.timer, cfg_.op, MCPWM_DUTY_MODE_0);
 
-    ESP_LOGI(TAG, "dir=%s duty=%.2f",
-             dir_ == MotorDir::Forward ? "F" : "R",
-             last_duty01_);
+    //ESP_LOGI(TAG, "dir=%s duty=%.2f",
+    //         dir_ == MotorDir::Forward ? "F" : "R",
+    //         last_duty01_);
 }
 
 // ──────────────────────────────────────────────────────────────────────────────
