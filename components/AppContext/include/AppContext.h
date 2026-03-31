@@ -96,7 +96,15 @@ struct AppContext
     DriveBase drive { wheel_left, wheel_right, geom, /*rpm_max=*/8000.0f };
 
     // === Servo de direction (GPIO 23) ===
-    McpwmServo::Config servo_cfg{};  // valeurs par défaut : 500 Hz, 50%, TIMER_2
+    McpwmServo::Config servo_cfg{
+    .unit      = MCPWM_UNIT_0,
+    .timer     = MCPWM_TIMER_2,  // libre chez toi ✅
+    .freq_hz   = 50,             // ✅ servo RC standard
+    .duty_init = 0.0f,           // ✅ AUCUN signal au boot
+    .pw_min_us = 1000,
+    .pw_max_us = 2000,
+    .angle_max = 30.0f
+};
     McpwmServo         servo { GPIO_NUM_23, servo_cfg };
     SteeringController steering { servo, -30.0f, +30.0f };
 

@@ -10,7 +10,7 @@
 
   // OpenOCD & port série
   "idf.openOcdConfigs": ["board/esp32c6-builtin.cfg"],
-  "idf.portWin": "COM5",
+  "idf.portWin": "COM17",
 
   // Build/flash
   "idf.flashType": "UART",

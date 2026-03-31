@@ -1,2 +1,2 @@
-source C:/esp/projects/S4_EspControle/build/gdbinit/symbols
-source C:/esp/projects/S4_EspControle/build/gdbinit/connect
+source C:/Session4/Projet/Code/EspCar/S4_EspControle/build/gdbinit/symbols
+source C:/Session4/Projet/Code/EspCar/S4_EspControle/build/gdbinit/connect

@@ -8,26 +8,24 @@ class McpwmServo : public IServo {
 public:
     struct Config {
         mcpwm_unit_t  unit      = MCPWM_UNIT_0;
-        mcpwm_timer_t timer     = MCPWM_TIMER_2;   // TIMER_0 et 1 pris par les moteurs
-        uint32_t      freq_hz   = 500;              // 500 Hz comme demandé
-        float         duty_init = 0.50f;            // 50% au démarrage = position neutre
-        // Limites physiques du servo en microsecondes (pour setAngleDeg)
-        uint32_t      pw_min_us = 1000;             // -maxDeg → 1 ms
-        uint32_t      pw_max_us = 2000;             // +maxDeg → 2 ms
-        float         angle_max = 30.0f;            // degrés max de chaque côté
+        mcpwm_timer_t timer     = MCPWM_TIMER_2;   // libre ✅
+        uint32_t      freq_hz   = 50;               // ✅ SERVO RC
+        float         duty_init = 0.0f;             // ✅ AUCUN signal au boot
+        // Limites physiques du servo en microsecondes
+        uint32_t      pw_min_us = 1000;              // 1 ms
+        uint32_t      pw_max_us = 2000;              // 2 ms
+        float         angle_max = 30.0f;             // ±30°
     };
 
     McpwmServo(gpio_num_t pin, const Config& cfg = s_default_cfg);
 
     esp_err_t init();
 
-    // IServo — angle en degrés, ex: -30..+30
+    // IServo
     void setAngleDeg(float angle) override;
 
-    // Accès direct au duty cycle [0.0 .. 1.0]
+    // Bas niveau (optionnel)
     void setDuty(float duty01);
-
-    // Accès direct à la largeur d'impulsion en µs
     void setPulseUs(uint32_t us);
 
 private:

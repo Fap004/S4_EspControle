@@ -1,11 +1,14 @@
 #include "AppContext.h"
 #include "esp_log.h"
 #include "esp_check.h"
+#include "esp_pm.h"
 
 static const char* TAG = "AppContext";
 
+
 esp_err_t appctx_init(AppContext& ctx)
 {
+
     // 1) Config MCPWM
     // Gauche : Unit0 / Timer0 / A
     ctx.L_cfg.unit        = MCPWM_UNIT_0;
@@ -60,7 +63,7 @@ esp_err_t appctx_init(AppContext& ctx)
     }
     // 5) Init servo de direction (GPIO 23)
     ESP_RETURN_ON_ERROR(ctx.servo.init(), TAG, "servo.init");
-    ESP_LOGI(TAG, "Servo direction OK: GPIO 23, 500 Hz, 50%% duty");
+    ESP_LOGI(TAG, "Servo direction OK: GPIO 23, 50 Hz, position neutre");
 
     // 6) Multiplexeur & watchdog (LOCAL par défaut)
     ctx.ctrl_mode        = AppContext::ControlMode::LOCAL;
