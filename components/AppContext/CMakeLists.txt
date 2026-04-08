@@ -15,4 +15,5 @@ idf_component_register(
         driver
         McpwmServo
         SteeringController
+        Protocol
 )

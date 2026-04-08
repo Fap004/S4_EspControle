@@ -8,6 +8,9 @@
 #include <math.h>
 #include <string.h>
 
+// ← changer ici pour ajuster la vitesse max
+#define SPEED_LIMIT_KMH  20.0f
+
 struct RxTxArgs {
     AppContext* ctx;
     uint8_t     peer[6];
@@ -26,20 +29,19 @@ static void vTaskRx(void* arg)
     size_t   len;
     uint16_t seq;
 
-    const float v_max = 30.0f; // ← vitesse max du robot en m/s (à ajuster)
+    const float v_max = SPEED_LIMIT_KMH / 3.6f;  // 20 km/h → 5.55 m/s
 
     for (;;)
     {
         if (!com_read_msg_wait(data, &len, &seq, portMAX_DELAY))
             continue;
 
-        // Extraire le uint16_t CMD
         uint16_t w = ((uint16_t)data[0] << 8) | data[1];
 
         uint8_t speed8, angle6, dir2;
         proto_unpack_cmd(w, &speed8, &angle6, &dir2);
 
-        // Vitesse : 0–255 → 0–100% → m/s
+        // Vitesse : 0–255 → 0–100% → m/s (limité à SPEED_LIMIT_KMH)
         float pct = (speed8 / 255.0f) * 100.0f;
         if (dir2 == PROTO_DIR_REV) pct = -pct;
         float v = (pct / 100.0f) * v_max;
@@ -49,6 +51,7 @@ static void vTaskRx(void* arg)
 
         AppContext::CmdVW cmd{ v, steer_deg };
         xQueueOverwrite(ctx->q_cmd_vw, &cmd);
+        ctx->tlm_unit = data[2];  // ← lire unité demandée (0=KMH par défaut)
 
         vTaskDelay(1); // safety yield
     }
@@ -82,12 +85,24 @@ static void vTaskTx(void* arg)
         float v_mps  = (rpmAvg / 60.0f) * (2.0f * M_PI * ctx->geom.wheel_radius_m);
 
         proto_tlm_t tlm_pkt;
-        tlm_pkt.speed_x100 = (int16_t)((v_mps * 3.6f) * 100.0f); // km/h × 100
-        tlm_pkt.unit       = PROTO_UNIT_KMH;
-        tlm_pkt.reserved   = 0;
+        tlm_pkt.unit = ctx->tlm_unit;
+
+        switch (ctx->tlm_unit) {
+            case PROTO_UNIT_MPS:
+                tlm_pkt.speed_x100 = (int16_t)(v_mps * 100.0f);
+                break;
+            case PROTO_UNIT_RPM:
+                tlm_pkt.speed_x100 = (int16_t)(rpmAvg);
+                break;
+            case PROTO_UNIT_KMH:
+            default:
+                tlm_pkt.speed_x100 = (int16_t)((v_mps * 3.6f) * 100.0f);
+                break;
+        }
+        tlm_pkt.reserved = 0;
 
         uint8_t data[MSG_DATA_LEN] = {};
-        memcpy(data, &tlm_pkt, sizeof(proto_tlm_t)); // 4 octets
+        memcpy(data, &tlm_pkt, sizeof(proto_tlm_t));
 
         com_send(peer, data, sizeof(data));
         vTaskDelayUntil(&last, period);

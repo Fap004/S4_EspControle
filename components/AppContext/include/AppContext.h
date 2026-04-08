@@ -10,6 +10,7 @@
 #include "PIDController.h"
 #include "WheelController.h"
 #include "DriveBase.h"
+#include "Protocol.h"
 
 #include "freertos/FreeRTOS.h"
 #include "freertos/queue.h"
@@ -66,7 +67,7 @@ struct AppContext
 
     // === WheelControllers ===
     WheelController::Config wc_cfg {
-        .rpm_max         = 8000.0f,
+        .rpm_max         = 2000.0f,//8000
         .lp_alpha        = 0.70f,
         .ticks_per_rev   = 0.0f,
         .use_encoder_tpr = true,
@@ -82,7 +83,7 @@ struct AppContext
         .track_width_m  = 0.190f,
         .wheel_base_m   = 0.190f
     };
-    DriveBase drive { wheel_left, wheel_right, geom, /*rpm_max=*/8000.0f };
+    DriveBase drive { wheel_left, wheel_right, geom, /*rpm_max=*/2000.0f };
 
     // === Servo de direction (GPIO 23) ===
     McpwmServo::Config servo_cfg {
@@ -102,6 +103,7 @@ struct AppContext
     ControlMode ctrl_mode        = ControlMode::LOCAL;
     TickType_t  last_rx_cmd_tick = 0;
     TickType_t  RX_CMD_TIMEOUT   = pdMS_TO_TICKS(200);
+    uint8_t tlm_unit = PROTO_UNIT_KMH;  // ← défaut km/h
 
     // === Communication (queues) ===
     // v_mps    : vitesse linéaire (m/s)
