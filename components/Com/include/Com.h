@@ -10,7 +10,8 @@
 extern "C" {
 #endif
 
-// Données utiles envoyées (2 octets comme dans l'exemple)
+// Enveloppe ESP-NOW : 8 octets de payload
+// CMD utilise 2 octets (proto_cmd), TLM utilise 4 octets (proto_tlm_t)
 #define MSG_DATA_LEN 8
 
 // Taille du buffer circulaire et de la queue RX

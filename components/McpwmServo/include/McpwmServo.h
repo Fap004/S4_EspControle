@@ -9,12 +9,12 @@ public:
     struct Config {
         mcpwm_unit_t  unit      = MCPWM_UNIT_0;
         mcpwm_timer_t timer     = MCPWM_TIMER_2;   // libre ✅
-        uint32_t      freq_hz   = 50;               // ✅ SERVO RC
+        uint32_t      freq_hz   = 100;               // ✅ SERVO RC
         float         duty_init = 0.0f;             // ✅ AUCUN signal au boot
         // Limites physiques du servo en microsecondes
-        uint32_t      pw_min_us = 1000;              // 1 ms
-        uint32_t      pw_max_us = 2000;              // 2 ms
-        float         angle_max = 30.0f;             // ±30°
+        uint32_t      pw_min_us = 500;              // 1 ms
+        uint32_t      pw_max_us = 2500;              // 2 ms
+        float         angle_max = 135.0f;             // ±1350°
     };
 
     McpwmServo(gpio_num_t pin, const Config& cfg = s_default_cfg);

@@ -36,7 +36,7 @@ static void vTaskWheelControlLoop(void* arg)
     const float target_rpm = 0.0f;
     const float dRPMmax    = 4000.0f;
 
-    AppContext::CmdVW last_cmd { .v_mps = 0.f, .omega = 0.f };
+    AppContext::CmdVW last_cmd { .v_mps = 0.f, .steer_deg = 0.f };
     AppContext::ControlMode prev_mode = ctx->ctrl_mode;
     float prev_v = 0.0f;
 
@@ -75,7 +75,7 @@ static void vTaskWheelControlLoop(void* arg)
         if (ctx->ctrl_mode == AppContext::ControlMode::REMOTE)
         {
             const bool stopping =
-                (last_cmd.v_mps == 0.0f && last_cmd.omega == 0.0f);
+                (last_cmd.v_mps == 0.0f && last_cmd.steer_deg == 0.0f);
             const bool was_moving = (prev_v != 0.0f);
 
             if (stopping && was_moving)
@@ -86,20 +86,13 @@ static void vTaskWheelControlLoop(void* arg)
 
             prev_v = last_cmd.v_mps;
 
-            // ── MOTEURS
-            ctx->drive.setVW(last_cmd.v_mps, last_cmd.omega);
+            // ── MOTEURS + SERVO via setVSteer
+            float steer_rad = last_cmd.steer_deg * static_cast<float>(M_PI) / 180.0f;
+            ctx->drive.setVSteer(last_cmd.v_mps, steer_rad);
             ctx->drive.update(dt);
 
-            // ── SERVO : Calcul UNIQUEMENT (PAS de PWM ici)
-            float steer_rad = 0.0f;
-            if (std::fabs(last_cmd.v_mps) > 0.01f)
-            {
-                const float wb = ctx->drive.geometry().wheel_base_m;
-                steer_rad = std::atan(last_cmd.omega * wb / last_cmd.v_mps);
-            }
-
-            float steer_deg = steer_rad * 180.0f / static_cast<float>(M_PI);
-            ctx->steering.setTargetAngle(steer_deg);
+            // ── SERVO : angle direct (PWM appliqué par vTaskSteeringLoop)
+            ctx->steering.setTargetAngle(last_cmd.steer_deg);
         }
         else
         {
@@ -112,8 +105,8 @@ static void vTaskWheelControlLoop(void* arg)
             ctx->wheel_left.update(dt);
             ctx->wheel_right.update(dt);
 
-            // Direction locale forcée
-            ctx->steering.setTargetAngle(20.0f);
+            // Direction neutre en local
+            ctx->steering.setTargetAngle(0.0f);
         }
 
         // ── Télémétrie ─────────────────────────────────────

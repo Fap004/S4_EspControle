@@ -63,7 +63,7 @@ esp_err_t appctx_init(AppContext& ctx)
     }
     // 5) Init servo de direction (GPIO 23)
     ESP_RETURN_ON_ERROR(ctx.servo.init(), TAG, "servo.init");
-    ESP_LOGI(TAG, "Servo direction OK: GPIO 23, 50 Hz, position neutre");
+    ESP_LOGI(TAG, "Servo direction OK: GPIO 23, 100 Hz, pw=[500,2500]us, angle_max=135deg");;
 
     // 6) Multiplexeur & watchdog (LOCAL par défaut)
     ctx.ctrl_mode        = AppContext::ControlMode::LOCAL;
