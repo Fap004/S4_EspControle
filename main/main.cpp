@@ -28,38 +28,3 @@ extern "C" void app_main(void)
     ESP_LOGI(TAG, "app_main: init OK, tasks started");
     // app_main() retourne, FreeRTOS prend la main.
 }
-/*
-#include "AppContext.h"
-#include "esp_log.h"
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
-
-static const char* TAG = "SERVO_TEST";
-
-extern "C" void app_main(void)
-{
-    static AppContext ctx;
-
-    //ESP_LOGI(TAG, "Init AppContext...");
-    ESP_ERROR_CHECK(appctx_init(ctx));
-
-    //ESP_LOGI(TAG, "=== SERVO TEST START ===");
-
-    while (true)
-    {
-        //ESP_LOGI(TAG, "Servo -> CENTRE (0 deg)");
-        ctx.steering.setTargetAngle(0.0f);
-        ctx.steering.update();
-        vTaskDelay(pdMS_TO_TICKS(2000));
-
-        //ESP_LOGI(TAG, "Servo -> DROITE (+20 deg)");
-        ctx.steering.setTargetAngle(20.0f);
-        ctx.steering.update();
-        vTaskDelay(pdMS_TO_TICKS(2000));
-
-        //ESP_LOGI(TAG, "Servo -> GAUCHE (-20 deg)");
-        ctx.steering.setTargetAngle(-20.0f);
-        ctx.steering.update();
-        vTaskDelay(pdMS_TO_TICKS(2000));
-    }
-}*/

@@ -68,7 +68,7 @@ struct AppContext
     // === WheelControllers ===
     WheelController::Config wc_cfg {
         .rpm_max         = 2000.0f,//8000
-        .lp_alpha        = 0.70f,
+        .lp_alpha        = 0.70f,//essayer plus bas
         .ticks_per_rev   = 0.0f,
         .use_encoder_tpr = true,
         .duty_min        = 0.08f,
