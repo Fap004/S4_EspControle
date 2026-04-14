@@ -59,8 +59,8 @@ struct AppContext
     PIDController::Limits lims { .u_min = -1.0f, .u_max = +1.0f,
                                  .i_min = -0.5f, .i_max = +0.5f };
 
-    PIDController::Gains gains_left  { .Kp = 1.5f, .Ki = 1.0f, .Kd = 0.1f };
-    PIDController::Gains gains_right { .Kp = 1.5f, .Ki = 1.0f, .Kd = 0.1f };
+    PIDController::Gains gains_left  { .Kp = 1.0f, .Ki = 1.0f, .Kd = 0.0f };
+    PIDController::Gains gains_right { .Kp = 1.0f, .Ki = 1.0f, .Kd = 0.0f };
 
     PIDController pid_left  { gains_left,  lims };
     PIDController pid_right { gains_right, lims };

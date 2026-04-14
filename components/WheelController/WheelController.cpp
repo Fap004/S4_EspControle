@@ -65,20 +65,35 @@ void WheelController::update(float dt)
     const float ref_norm  = target_rpm_ / cfg_.rpm_max;
     const float meas_norm = rpm_meas_   / cfg_.rpm_max;
 
-    const float u = pid_.compute(ref_norm, meas_norm, dt);
-
+    //const float u = pid_.compute(ref_norm, meas_norm, dt);
     // 6) Limitation PWM à très basse vitesse (ANTI SUR-COURANT)
+    //float duty = std::fabs(u);
+    
+    // 5) PID
+    const float u_pid = pid_.compute(ref_norm, meas_norm, dt);
+
+    // ✅ Clamp soft PWM (ex: jamais plus que 95%)
+    constexpr float U_MAX_SAFE = 0.95f;
+    const float u = std::clamp(u_pid, -U_MAX_SAFE, +U_MAX_SAFE);
+
+    // 6) PWM
     float duty = std::fabs(u);
+        
+
     if (std::fabs(rpm_meas_) < 100.0f)
         duty = std::min(duty, 0.4f);   // ✅ jamais 100% à l'arrêt
 
-    // 7) Dead-zone propre
+    // 7) Arrêt sécurisé (sans appel à brake())
+    constexpr float RPM_STOP_ZONE = 10.0f;
+
     if (duty < cfg_.duty_min)
     {
+        // Au-dessus de la zone → coast
         motor_.setDuty(0.0f);
+
+        // En dessous de la zone → PID + ramp feront le stop
         return;
     }
-
     // 8) Commande moteur
     motor_.setDirection(u >= 0.0f ? MotorDir::Forward
                                   : MotorDir::Reverse);

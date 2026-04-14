@@ -14,7 +14,6 @@ McpwmServo::McpwmServo(gpio_num_t pin, const Config& cfg)
 
 esp_err_t McpwmServo::init()
 {
-    // Signal MCPWM selon timer
     const mcpwm_io_signals_t sig =
         (cfg_.timer == MCPWM_TIMER_0) ? MCPWM0A :
         (cfg_.timer == MCPWM_TIMER_1) ? MCPWM1A : MCPWM2A;
@@ -24,8 +23,8 @@ esp_err_t McpwmServo::init()
         TAG, "mcpwm_gpio_init");
 
     mcpwm_config_t m = {};
-    m.frequency    = cfg_.freq_hz;   // ✅ 50 Hz
-    m.cmpr_a       = 0.0f;           // ✅ AUCUN PWM AU BOOT
+    m.frequency    = cfg_.freq_hz;
+    m.cmpr_a       = 0.0f;
     m.cmpr_b       = 0.0f;
     m.counter_mode = MCPWM_UP_COUNTER;
     m.duty_mode    = MCPWM_DUTY_MODE_0;
@@ -35,20 +34,25 @@ esp_err_t McpwmServo::init()
         TAG, "mcpwm_init");
 
     mcpwm_start(cfg_.unit, cfg_.timer);
-
-    // ✅ laisser le servo se stabiliser
-    vTaskDelay(pdMS_TO_TICKS(200));
-
     initialized_ = true;
 
-    // ✅ NEUTRE EXPLICITE = 1.5 ms
-    setAngleDeg(0.0f);
+    // ✅ Neutre 1500µs dès le boot → servo centré et stable
+    holdNeutral();
+    vTaskDelay(pdMS_TO_TICKS(300));
 
-    ESP_LOGI(TAG,
-        "Servo OK: gpio=%d freq=%uHz neutral=1.5ms",
-        (int)pin_, (unsigned)cfg_.freq_hz);
+    const uint32_t neutral_us = (cfg_.pw_min_us + cfg_.pw_max_us) / 2;
+    ESP_LOGI(TAG, "Servo OK: gpio=%d freq=%uHz pw=[%u,%u]us neutral=%uus",
+        (int)pin_, (unsigned)cfg_.freq_hz,
+        cfg_.pw_min_us, cfg_.pw_max_us, neutral_us);
 
     return ESP_OK;
+}
+
+void McpwmServo::holdNeutral()
+{
+    if (!initialized_) return;
+    const uint32_t neutral_us = (cfg_.pw_min_us + cfg_.pw_max_us) / 2;
+    setPulseUs(neutral_us);
 }
 
 void McpwmServo::setDuty(float duty01)
@@ -62,19 +66,17 @@ void McpwmServo::setDuty(float duty01)
 void McpwmServo::setPulseUs(uint32_t us)
 {
     if (!initialized_ || cfg_.freq_hz == 0) return;
-
     const float period_us = 1'000'000.0f / (float)cfg_.freq_hz;
-    const float duty = (float)us / period_us;   // ex: 1500/20000 = 0.075
-
+    const float duty = (float)us / period_us;
     setDuty(duty);
 }
 
 void McpwmServo::setAngleDeg(float angle)
 {
+    if (!initialized_) return;
     angle = std::clamp(angle, -cfg_.angle_max, +cfg_.angle_max);
     const float t = (angle + cfg_.angle_max) / (2.0f * cfg_.angle_max);
     const uint32_t us =
-        (uint32_t)(cfg_.pw_min_us + t * (cfg_.pw_max_us - cfg_.pw_min_us));
-
+        (uint32_t)(cfg_.pw_min_us + t * (float)(cfg_.pw_max_us - cfg_.pw_min_us));
     setPulseUs(us);
 }

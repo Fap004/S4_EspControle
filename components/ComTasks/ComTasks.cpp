@@ -9,7 +9,7 @@
 #include <string.h>
 
 // ← changer ici pour ajuster la vitesse max
-#define SPEED_LIMIT_KMH  20.0f
+#define SPEED_LIMIT_KMH  10.0f//20/15
 
 struct RxTxArgs {
     AppContext* ctx;
