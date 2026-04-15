@@ -68,7 +68,7 @@ static void vTaskTx(void* arg)
     memcpy(peer, a->peer, 6);
     delete a;
 
-    const TickType_t period = pdMS_TO_TICKS(100); // 10 Hz
+    const TickType_t period = pdMS_TO_TICKS(50); // 10 Hz
     TickType_t last = xTaskGetTickCount();
 
     for (;;)

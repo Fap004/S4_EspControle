@@ -10,7 +10,7 @@
 // ─────────────────────────────────────────────────────────────
 #define STOP_THRESHOLD_MPS  0.5f
 #define STOP_THRESHOLD_DEG  1.0f
-#define MAX_STEER_DEG       45.0f
+#define MAX_STEER_DEG       30.0f
 #define STEER_RAMP_DEG_S    120.0f
 #define ZERO_CROSS_ZONE_MPS  0.3f   // zone autour de 0 (±0.3 m/s)
 
@@ -133,12 +133,10 @@ static void vTaskWheelControlLoop(void* arg)
 
             if (near_zero || sign_change)
             {
-                // ✅ Frein doux uniquement près de 0
                 v_ramp = v_ramp_brake;
             }
             else
             {
-                // ✅ Accélération normale ailleurs
                 v_ramp = v_ramp_accel;
             }
 
